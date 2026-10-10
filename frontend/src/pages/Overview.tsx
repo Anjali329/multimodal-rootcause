@@ -1,585 +1,414 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Image as ImageIcon,
-  Mic,
-  ChevronLeft,
-  ChevronRight,
-  BookOpen,
-  FileText,
-  Brain,
-  Baby,
-  Video,
-  ArrowUpRight,
-  Flame,
+import { 
+  ArrowRight, 
+  BookOpen, 
+  Flame, 
+  Target, 
+  CheckCircle2, 
+  Clock,
+  MessageSquare,
+  Network,
   Trophy,
+  FlaskConical,
+  Video,
+  ChevronRight,
+  TrendingUp,
+  Sparkles
 } from 'lucide-react';
 
 export function OverviewPage() {
   const navigate = useNavigate();
-  const [prompt, setPrompt] = useState('');
 
-  const quickPills = [
-    { label: 'Explain this concept', icon: BookOpen, color: 'text-blue-600' },
-    { label: 'Summarize this', icon: FileText, color: 'text-amber-600' },
-    { label: 'Test my knowledge', icon: Brain, color: 'text-rose-500' },
-    { label: "Explain like I'm 5", icon: Baby, color: 'text-yellow-600' },
-    { label: 'Visual demonstration', icon: Video, color: 'text-purple-600' },
+  const featuresList = [
+    {
+      id: 'feat-rewind',
+      title: 'Root-Cause Rewind',
+      badge: 'Core Diagnosis',
+      badgeColor: 'text-rose-700 border-rose-200 bg-rose-50',
+      description: 'Traces failure patterns backward through prerequisite knowledge DAG to isolate foundational gaps.',
+      icon: Target,
+      iconColor: 'text-rose-600',
+      iconBg: 'bg-rose-50 border-rose-100',
+      path: '/report/report-001',
+      cta: 'Inspect Diagnosis'
+    },
+    {
+      id: 'feat-tutor',
+      title: 'Socratic AI Tutor',
+      badge: 'Zero Hallucinations',
+      badgeColor: 'text-blue-700 border-blue-200 bg-blue-50',
+      description: 'Interactive Socratic coach providing targeted hints and diagram proofs grounded in your course materials.',
+      icon: MessageSquare,
+      iconColor: 'text-blue-600',
+      iconBg: 'bg-blue-50 border-blue-100',
+      path: '/tutor',
+      cta: 'Launch Tutor'
+    },
+    {
+      id: 'feat-map',
+      title: 'Topological Knowledge Map',
+      badge: 'Visual DAG',
+      badgeColor: 'text-purple-700 border-purple-200 bg-purple-50',
+      description: 'Interactive concept graph displaying live mastery levels, dependency bottlenecks, and remedial learning paths.',
+      icon: Network,
+      iconColor: 'text-purple-600',
+      iconBg: 'bg-purple-50 border-purple-100',
+      path: '/map',
+      cta: 'Explore Map'
+    },
+    {
+      id: 'feat-library',
+      title: 'Multimodal Source Grounding',
+      badge: 'OCR & Video Citations',
+      badgeColor: 'text-cyan-700 border-cyan-200 bg-cyan-50',
+      description: 'Course lecture PDFs, slides, and timestamped video recordings auto-indexed into granular conceptual units.',
+      icon: Video,
+      iconColor: 'text-cyan-600',
+      iconBg: 'bg-cyan-50 border-cyan-100',
+      path: '/library',
+      cta: 'Open Library'
+    },
+    {
+      id: 'feat-quiz',
+      title: 'Adaptive Quiz Arena',
+      badge: 'Confidence-Weighted',
+      badgeColor: 'text-amber-700 border-amber-200 bg-amber-50',
+      description: 'Calibrated diagnostic assessments with Sure/Maybe/Guess signaling to distinguish true gaps from test fatigue.',
+      icon: Trophy,
+      iconColor: 'text-amber-600',
+      iconBg: 'bg-amber-50 border-amber-100',
+      path: '/quiz',
+      cta: 'Start Practice'
+    },
+    {
+      id: 'feat-eval',
+      title: 'Evaluation & Faithfulness Lab',
+      badge: '92.4% Precision',
+      badgeColor: 'text-fuchsia-700 border-fuchsia-200 bg-fuchsia-50',
+      description: 'Benchmark suite evaluating retrieval faithfulness, citation precision, context recall, and comparative ablations.',
+      icon: FlaskConical,
+      iconColor: 'text-fuchsia-600',
+      iconBg: 'bg-fuchsia-50 border-fuchsia-100',
+      path: '/eval-lab',
+      cta: 'View Benchmarks'
+    },
   ];
 
-  const handleAskSubmit = (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    if (prompt.trim()) {
-      navigate(`/tutor?q=${encodeURIComponent(prompt)}`);
-    } else {
-      navigate('/tutor');
-    }
-  };
-
-  const handlePillClick = (text: string) => {
-    setPrompt(text);
-    navigate(`/tutor?q=${encodeURIComponent(text)}`);
-  };
-
-  // Activity heatmap grid pattern (7 rows x 16 columns)
-  // Higher numbers correspond to deeper blue intensities (0 to 4)
-  const heatmapData: number[][] = [
-    [0, 1, 0, 0, 0, 2, 0, 0, 0, 0, 1, 2, 0, 3, 4, 3],
-    [1, 0, 0, 0, 0, 4, 2, 0, 0, 0, 3, 0, 0, 4, 4, 4],
-    [0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 4, 0, 2, 3, 4, 4],
-    [0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 3, 4, 4],
-    [0, 0, 2, 0, 0, 0, 0, 2, 3, 0, 4, 3, 4, 4, 4, 4],
-    [0, 3, 4, 0, 0, 0, 0, 0, 4, 0, 4, 4, 4, 4, 4, 4],
-    [0, 4, 4, 0, 0, 0, 0, 0, 4, 0, 4, 4, 4, 4, 4, 4],
+  const recentActivities = [
+    {
+      id: 'act-1',
+      title: 'Completed: Binary Trees',
+      subject: 'Data Structures & Algorithms',
+      time: '2h ago',
+      iconColor: 'text-blue-600',
+      iconBg: 'bg-blue-50',
+    },
+    {
+      id: 'act-2',
+      title: 'Attempted: SQL Joins Quiz',
+      subject: 'Database Systems',
+      time: '4h ago',
+      iconColor: 'text-emerald-600',
+      iconBg: 'bg-emerald-50',
+    },
+    {
+      id: 'act-3',
+      title: 'Viewed: System Design Notes',
+      subject: 'System Design',
+      time: '6h ago',
+      iconColor: 'text-purple-600',
+      iconBg: 'bg-purple-50',
+    },
+    {
+      id: 'act-4',
+      title: 'Traced: Chain Rule Gap',
+      subject: 'Calculus I (Function Comp)',
+      time: '1d ago',
+      iconColor: 'text-rose-600',
+      iconBg: 'bg-rose-50',
+    },
   ];
-
-  const getHeatmapColor = (level: number) => {
-    switch (level) {
-      case 1:
-        return 'bg-blue-100';
-      case 2:
-        return 'bg-blue-300';
-      case 3:
-        return 'bg-blue-500';
-      case 4:
-        return 'bg-blue-600';
-      default:
-        return 'bg-slate-100';
-    }
-  };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-7 items-start">
+    <div className="space-y-6">
       
-      {/* ═════════════════════════════════════════════════════════════ */}
-      {/* ── LEFT & CENTER MAIN CANVAS: Clean Simple Interactive Hub ── */}
-      {/* ═════════════════════════════════════════════════════════════ */}
-      <div className="lg:col-span-8 space-y-6 sm:space-y-7 min-w-0">
-
-        {/* ── Greeting Header ─────────────────────────────────────── */}
+      {/* ── Top Bar ──────────────────────────────────────────────── */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
         <div>
-          <h1 className="text-2xl sm:text-[28px] font-extrabold text-slate-900 tracking-tight">
-            Good Morning, Hana
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+            Learning Workspace
           </h1>
-        </div>
-
-        {/* ── Visual Ask Anything Input Box ────────────────────────── */}
-        <div className="bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-5 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-3.5">
-          <form onSubmit={handleAskSubmit} className="relative">
-            <input
-              type="text"
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              placeholder="Ask anything"
-              className="w-full text-base sm:text-lg text-slate-800 placeholder-slate-400 bg-transparent border-0 outline-none pr-16 pl-1 font-normal"
-            />
-            
-            {/* Input icons inside box */}
-            <div className="flex items-center justify-between pt-4 border-t border-slate-100 mt-3">
-              <button
-                type="button"
-                onClick={() => navigate('/library')}
-                title="Attach source file or diagram"
-                className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-lg transition-colors cursor-pointer"
-              >
-                <ImageIcon className="w-5 h-5" />
-              </button>
-
-              <button
-                type="button"
-                onClick={() => navigate('/tutor')}
-                title="Voice input"
-                className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-lg transition-colors cursor-pointer"
-              >
-                <Mic className="w-5 h-5" />
-              </button>
-            </div>
-          </form>
-
-          {/* Quick Action Pills matching reference screenshot */}
-          <div className="flex flex-wrap gap-2 pt-1">
-            {quickPills.map((pill, i) => {
-              const Icon = pill.icon;
-              return (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={() => handlePillClick(pill.label)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-200 hover:border-slate-300 hover:bg-slate-50/80 text-[12.5px] font-medium text-slate-700 transition-all cursor-pointer shadow-2xs"
-                >
-                  <Icon className={`w-3.5 h-3.5 ${pill.color}`} />
-                  <span>{pill.label}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* ── Continue Learning Section ───────────────────────────── */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
-              Continue Learning
-            </h2>
-            <div className="flex items-center gap-1 text-slate-400">
-              <button className="p-1 rounded-full hover:bg-slate-100 hover:text-slate-700 transition-colors">
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <button className="p-1 rounded-full hover:bg-slate-100 hover:text-slate-700 transition-colors">
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            
-            {/* Card 1: Electricity & Magnetism (Peach/Rose Pastel Banner) */}
-            <div
-              onClick={() => navigate('/report/report-001')}
-              className="bg-white rounded-2xl border border-slate-200/80 p-3 hover:border-slate-300 transition-all cursor-pointer shadow-[0_2px_10px_rgba(0,0,0,0.02)] group flex flex-col justify-between"
-            >
-              <div>
-                {/* Visual Header Banner */}
-                <div className="h-32 rounded-xl bg-[#FEECEC] flex items-center justify-center relative overflow-hidden">
-                  <span className="absolute top-2.5 left-2.5 bg-white/95 backdrop-blur-xs text-[10.5px] font-semibold text-slate-700 px-2.5 py-0.5 rounded-full shadow-2xs">
-                    Due Tomorrow, 9:00
-                  </span>
-                  
-                  {/* Magnet Illustration 🧲 */}
-                  <div className="text-5xl group-hover:scale-110 transition-transform duration-200">
-                    🧲
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="mt-3 px-1">
-                  <h3 className="font-bold text-[13.5px] text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">
-                    Electricity & Magnetism
-                  </h3>
-                  <p className="text-xs text-slate-500 mt-0.5">
-                    Physics 12A
-                  </p>
-                </div>
-              </div>
-
-              {/* Progress Bar & Stats */}
-              <div className="mt-3 px-1 pt-1">
-                <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-blue-600 rounded-full" style={{ width: '86%' }} />
-                </div>
-                <div className="mt-2 text-[11px] text-slate-500 font-medium">
-                  86% complete • 30 min
-                </div>
-              </div>
-            </div>
-
-            {/* Card 2: Forces & Motion Essentials (Mint/Cyan Pastel Banner) */}
-            <div
-              onClick={() => navigate('/tutor')}
-              className="bg-white rounded-2xl border border-slate-200/80 p-3 hover:border-slate-300 transition-all cursor-pointer shadow-[0_2px_10px_rgba(0,0,0,0.02)] group flex flex-col justify-between"
-            >
-              <div>
-                {/* Visual Header Banner */}
-                <div className="h-32 rounded-xl bg-[#E8F7F8] flex items-center justify-center relative overflow-hidden">
-                  <span className="absolute top-2.5 left-2.5 bg-white/95 backdrop-blur-xs text-[10.5px] font-semibold text-slate-700 px-2.5 py-0.5 rounded-full shadow-2xs">
-                    Due 12 June
-                  </span>
-
-                  {/* Stacked Avatars */}
-                  <div className="absolute top-2.5 right-2.5 flex items-center">
-                    <div className="w-5 h-5 rounded-full bg-purple-600 text-white font-bold text-[9px] flex items-center justify-center shadow-xs border border-white">
-                      E
-                    </div>
-                    <div className="w-5 h-5 rounded-full bg-amber-500 text-white font-bold text-[9px] flex items-center justify-center shadow-xs border border-white -ml-1.5">
-                      A
-                    </div>
-                  </div>
-
-                  {/* Triangle Ruler Illustration 📐 */}
-                  <div className="text-5xl group-hover:scale-110 transition-transform duration-200">
-                    📐
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="mt-3 px-1">
-                  <h3 className="font-bold text-[13.5px] text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">
-                    Forces & Motion Essentials
-                  </h3>
-                  <p className="text-xs text-slate-500 mt-0.5">
-                    Physics 12A
-                  </p>
-                </div>
-              </div>
-
-              {/* Progress Bar & Stats */}
-              <div className="mt-3 px-1 pt-1">
-                <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-blue-600 rounded-full" style={{ width: '57%' }} />
-                </div>
-                <div className="mt-2 text-[11px] text-slate-500 font-medium">
-                  57% complete • 45 min
-                </div>
-              </div>
-            </div>
-
-            {/* Card 3: ResNets & Gradient Flow (Lavender/Purple Pastel Banner) */}
-            <div
-              onClick={() => navigate('/map')}
-              className="bg-white rounded-2xl border border-slate-200/80 p-3 hover:border-slate-300 transition-all cursor-pointer shadow-[0_2px_10px_rgba(0,0,0,0.02)] group flex flex-col justify-between"
-            >
-              <div>
-                {/* Visual Header Banner */}
-                <div className="h-32 rounded-xl bg-[#F0EEFF] flex items-center justify-center relative overflow-hidden">
-                  {/* DNA / Double Helix Illustration 🧬 */}
-                  <div className="text-5xl group-hover:scale-110 transition-transform duration-200">
-                    🧬
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="mt-3 px-1">
-                  <h3 className="font-bold text-[13.5px] text-slate-900 group-hover:text-purple-600 transition-colors line-clamp-1">
-                    Forces & Motion Essentials
-                  </h3>
-                  <p className="text-xs text-slate-500 mt-0.5">
-                    Mindjoy Physics
-                  </p>
-                </div>
-              </div>
-
-              {/* Progress Bar & Stats */}
-              <div className="mt-3 px-1 pt-1">
-                <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-blue-600 rounded-full" style={{ width: '42%' }} />
-                </div>
-                <div className="mt-2 text-[11px] text-slate-500 font-medium">
-                  42% complete • 2 hrs
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        {/* ── Tutors Section ───────────────────────────────────────── */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
-              Tutors
-            </h2>
-            <div className="flex items-center gap-1 text-slate-400">
-              <button className="p-1 rounded-full hover:bg-slate-100 hover:text-slate-700 transition-colors">
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <button className="p-1 rounded-full hover:bg-slate-100 hover:text-slate-700 transition-colors">
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            
-            {/* Tutor Card 1: Coding Tutor */}
-            <div
-              onClick={() => navigate('/tutor?role=coding')}
-              className="bg-white rounded-2xl border border-slate-200/80 p-4 hover:border-slate-300 transition-all cursor-pointer shadow-[0_2px_10px_rgba(0,0,0,0.02)] flex gap-3.5 items-start group"
-            >
-              {/* Illustrated Character Avatar */}
-              <div className="w-16 h-16 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 overflow-hidden shadow-xs relative">
-                <div className="absolute inset-0 bg-gradient-to-tr from-indigo-900 via-slate-800 to-cyan-900 opacity-90" />
-                <span className="relative z-10 text-2xl">💻</span>
-              </div>
-
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between gap-1">
-                  <h3 className="font-bold text-[14px] text-slate-900 group-hover:text-blue-600 transition-colors truncate">
-                    Coding Tutor
-                  </h3>
-                </div>
-
-                <div className="flex items-center gap-1.5 text-[11px] text-slate-500 mt-0.5">
-                  <span className="font-semibold text-blue-600 flex items-center">
-                    <ArrowUpRight className="w-3 h-3" /> CS500
-                  </span>
-                  <span>•</span>
-                  <span>4 weeks ago</span>
-                </div>
-
-                <p className="text-xs text-slate-500 mt-1.5 line-clamp-2 leading-relaxed">
-                  Learn coding step-by-step with a patient guide focused on clear logic...
-                </p>
-              </div>
-            </div>
-
-            {/* Tutor Card 2: Physics Mentor */}
-            <div
-              onClick={() => navigate('/tutor?role=physics')}
-              className="bg-white rounded-2xl border border-slate-200/80 p-4 hover:border-slate-300 transition-all cursor-pointer shadow-[0_2px_10px_rgba(0,0,0,0.02)] flex gap-3.5 items-start group"
-            >
-              {/* Illustrated Character Avatar */}
-              <div className="w-16 h-16 rounded-xl bg-amber-950 text-white flex items-center justify-center shrink-0 overflow-hidden shadow-xs relative">
-                <div className="absolute inset-0 bg-gradient-to-tr from-amber-900 via-slate-800 to-indigo-900 opacity-90" />
-                <span className="relative z-10 text-2xl">🧑‍🏫</span>
-              </div>
-
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between gap-1">
-                  <h3 className="font-bold text-[14px] text-slate-900 group-hover:text-blue-600 transition-colors truncate">
-                    Physics Mentor
-                  </h3>
-                </div>
-
-                <div className="flex items-center gap-1.5 text-[11px] text-slate-500 mt-0.5">
-                  <span className="font-semibold text-blue-600 flex items-center">
-                    <ArrowUpRight className="w-3 h-3" /> Physics 101
-                  </span>
-                  <span>•</span>
-                  <span>2 weeks ago</span>
-                </div>
-
-                <p className="text-xs text-slate-500 mt-1.5 line-clamp-2 leading-relaxed">
-                  Make physics clear! Learn how equations connect to your everyday intuition...
-                </p>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        {/* ── Learning Progress Section ───────────────────────────── */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
-              Learning Progress
-            </h2>
-            <div className="flex items-center gap-1 text-slate-400">
-              <button className="p-1 rounded-full hover:bg-slate-100 hover:text-slate-700 transition-colors">
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <button className="p-1 rounded-full hover:bg-slate-100 hover:text-slate-700 transition-colors">
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            
-            {/* Leaderboard Card */}
-            <div
-              onClick={() => navigate('/quiz')}
-              className="bg-white rounded-2xl border border-slate-200/80 p-4 hover:border-slate-300 transition-all cursor-pointer shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-bold text-[14px] text-slate-900">
-                    Leaderboard
-                  </h3>
-                  <p className="text-xs text-slate-500 mt-0.5">
-                    Time spent learning this week
-                  </p>
-                </div>
-                <Trophy className="w-5 h-5 text-amber-500" />
-              </div>
-
-              <div className="mt-4 flex items-center justify-between text-xs pt-1 border-t border-slate-100">
-                <span className="font-semibold text-slate-700">Rank #2 in cohort</span>
-                <span className="font-bold text-blue-600">14.5 hrs</span>
-              </div>
-            </div>
-
-            {/* Learning Streak Card */}
-            <div
-              onClick={() => navigate('/plan')}
-              className="bg-white rounded-2xl border border-slate-200/80 p-4 hover:border-slate-300 transition-all cursor-pointer shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-bold text-[14px] text-slate-900">
-                    Learning Streak
-                  </h3>
-                  <p className="text-xs text-slate-500 mt-0.5">
-                    174 study sessions in the last year
-                  </p>
-                </div>
-                <Flame className="w-5 h-5 text-orange-500" />
-              </div>
-
-              <div className="mt-4 flex items-center justify-between text-xs pt-1 border-t border-slate-100">
-                <span className="font-semibold text-slate-700">Active Streak</span>
-                <span className="font-bold text-orange-600">14 Days 🔥</span>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-
-      {/* ═════════════════════════════════════════════════════════════ */}
-      {/* ── RIGHT PROFILE & VISUALIZATIONS PANEL ─────────────────── */}
-      {/* ═════════════════════════════════════════════════════════════ */}
-      <div className="lg:col-span-4 bg-white border border-slate-200/80 rounded-3xl p-5 sm:p-6 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-5">
-        
-        {/* Profile Card Header */}
-        <div className="flex items-center gap-3.5">
-          <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-blue-500 via-sky-400 to-indigo-600 text-white font-bold text-xl flex items-center justify-center shadow-md">
-            H
-          </div>
-          <div>
-            <h2 className="text-[17px] font-extrabold text-slate-900 leading-tight">
-              Hana
-            </h2>
-            <span className="text-[10px] font-bold text-slate-400 tracking-wider uppercase mt-0.5 inline-block">
-              PROBLEM SOLVER
-            </span>
-          </div>
-        </div>
-
-        {/* Divider */}
-        <div className="border-b border-dashed border-slate-200" />
-
-        {/* Game Plan Section */}
-        <div className="space-y-1.5">
-          <span className="text-[11px] font-bold text-slate-400 tracking-wider uppercase block">
-            GAME PLAN
-          </span>
-          <p className="text-xs text-slate-700 leading-relaxed font-normal">
-            I'm aiming to <strong className="font-semibold text-slate-900">do well academically by mastering the basics</strong>.
+          <p className="text-slate-500 text-xs sm:text-sm mt-0.5">
+            Real-time multimodal diagnostics, prerequisite tracking, and Socratic remediation
           </p>
         </div>
 
-        {/* Divider */}
-        <div className="border-b border-dashed border-slate-200" />
-
-        {/* How I Like to Learn (Multi-colored progress bars) */}
-        <div className="space-y-3">
-          <span className="text-[11px] font-bold text-slate-400 tracking-wider uppercase block">
-            HOW I LIKE TO LEARN
-          </span>
-
-          <div className="space-y-2.5">
-            {/* Seeing & Drawing - Blue */}
-            <div className="flex items-center justify-between gap-3 text-xs">
-              <span className="text-slate-700 font-medium shrink-0">Seeing & Drawing</span>
-              <div className="w-28 h-2 bg-slate-100 rounded-full overflow-hidden">
-                <div className="h-full bg-blue-600 rounded-full" style={{ width: '85%' }} />
-              </div>
-            </div>
-
-            {/* Reading & Writing - Purple */}
-            <div className="flex items-center justify-between gap-3 text-xs">
-              <span className="text-slate-700 font-medium shrink-0">Reading & Writing</span>
-              <div className="w-28 h-2 bg-slate-100 rounded-full overflow-hidden">
-                <div className="h-full bg-purple-600 rounded-full" style={{ width: '42%' }} />
-              </div>
-            </div>
-
-            {/* Speaking & Listening - Orange */}
-            <div className="flex items-center justify-between gap-3 text-xs">
-              <span className="text-slate-700 font-medium shrink-0">Speaking & Listening</span>
-              <div className="w-28 h-2 bg-slate-100 rounded-full overflow-hidden">
-                <div className="h-full bg-orange-500 rounded-full" style={{ width: '25%' }} />
-              </div>
-            </div>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-xs font-semibold text-slate-700 shadow-2xs">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span>Active Session: CS500 Deep Learning</span>
           </div>
         </div>
+      </div>
 
-        {/* Divider */}
-        <div className="border-b border-dashed border-slate-200" />
-
-        {/* Values / Mastery Badges */}
-        <div className="space-y-2">
-          <span className="text-[11px] font-bold text-slate-400 tracking-wider uppercase block">
-            VALUES
-          </span>
-
-          <div className="flex flex-wrap gap-1.5">
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-100">
-              🌱 Growth
-            </span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-800 border border-amber-100">
-              🎨 Creativity
-            </span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-orange-50 text-orange-800 border border-orange-100">
-              🦁 Courage
-            </span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-800 border border-blue-100">
-              📚 Learning
-            </span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-50 text-yellow-800 border border-yellow-100">
-              ⭐ Excellence
+      {/* ── Main Two-Column Layout: Features Left, Dashboard Right ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-7 items-start">
+        
+        {/* ═════════════════════════════════════════════════════════════ */}
+        {/* ── LEFT SIDE: Core Platform Features Arranged Vertically ── */}
+        {/* ═════════════════════════════════════════════════════════════ */}
+        <div className="lg:col-span-5 space-y-4">
+          
+          <div className="flex items-center justify-between pb-1">
+            <div>
+              <span className="text-[11px] font-bold text-blue-600 tracking-wider uppercase">
+                Platform Capabilities
+              </span>
+              <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight mt-0.5">
+                Adaptive Features
+              </h2>
+            </div>
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
+              6 Modules Active
             </span>
           </div>
-        </div>
 
-        {/* Divider */}
-        <div className="border-b border-dashed border-slate-200" />
-
-        {/* Learning Sessions Calendar Heatmap Visualization */}
-        <div className="space-y-2 pt-0.5">
-          <div>
-            <h3 className="font-bold text-[14px] text-slate-900">
-              Learning Sessions
-            </h3>
-            <p className="text-xs text-slate-500 mt-0.5">
-              174 study sessions in the last year
-            </p>
-          </div>
-
-          {/* Months header */}
-          <div className="flex justify-between text-[11px] text-slate-400 font-medium px-0.5 pt-2">
-            <span>Jan</span>
-            <span>Feb</span>
-            <span>Mar</span>
-            <span>Apr</span>
-          </div>
-
-          {/* Heatmap Grid Matrix */}
-          <div className="grid grid-rows-7 grid-flow-col gap-1 pt-1 justify-between">
-            {heatmapData.map((row, rIdx) =>
-              row.map((val, cIdx) => (
+          {/* Vertical Feature Cards Stack */}
+          <div className="space-y-3">
+            {featuresList.map((feat) => {
+              const Icon = feat.icon;
+              return (
                 <div
-                  key={`${rIdx}-${cIdx}`}
-                  className={`w-3.5 h-3.5 rounded-[3px] transition-colors ${getHeatmapColor(val)}`}
-                  title={`${val > 0 ? val * 2 : 0} sessions`}
-                />
-              ))
-            )}
+                  key={feat.id}
+                  onClick={() => navigate(feat.path)}
+                  className="bg-white hover:border-slate-300 rounded-2xl p-4 sm:p-4.5 border border-slate-200/80 shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group flex items-start gap-3.5"
+                >
+                  {/* Icon */}
+                  <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 border group-hover:scale-105 transition-transform ${feat.iconBg} ${feat.iconColor}`}>
+                    <Icon className="w-5 h-5" />
+                  </div>
+
+                  {/* Feature Content */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2 mb-1">
+                      <h3 className="font-bold text-sm text-slate-900 truncate group-hover:text-blue-600 transition-colors">
+                        {feat.title}
+                      </h3>
+                      <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border shrink-0 ${feat.badgeColor}`}>
+                        {feat.badge}
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
+                      {feat.description}
+                    </p>
+
+                    <div className="mt-2.5 flex items-center gap-1 text-[11px] font-semibold text-blue-600 group-hover:text-blue-700 transition-colors">
+                      <span>{feat.cta}</span>
+                      <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
-          {/* Heatmap Legend */}
-          <div className="flex items-center justify-between text-[10px] text-slate-400 pt-2">
-            <span>Less</span>
-            <div className="flex items-center gap-1">
-              <span className="w-2.5 h-2.5 rounded-[2px] bg-slate-100" />
-              <span className="w-2.5 h-2.5 rounded-[2px] bg-blue-100" />
-              <span className="w-2.5 h-2.5 rounded-[2px] bg-blue-300" />
-              <span className="w-2.5 h-2.5 rounded-[2px] bg-blue-500" />
-              <span className="w-2.5 h-2.5 rounded-[2px] bg-blue-600" />
+        </div>
+
+        {/* ═════════════════════════════════════════════════════════════ */}
+        {/* ── RIGHT SIDE: Operational Learning Dashboard ───────────── */}
+        {/* ═════════════════════════════════════════════════════════════ */}
+        <div className="lg:col-span-7 space-y-5">
+          
+          <div className="flex items-center justify-between pb-1">
+            <div>
+              <span className="text-[11px] font-bold text-emerald-600 tracking-wider uppercase">
+                Learner Analytics
+              </span>
+              <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight mt-0.5">
+                Personal Progress Dashboard
+              </h2>
             </div>
-            <span>More</span>
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center gap-1">
+              <Sparkles className="w-3.5 h-3.5" />
+              Optimal Study State
+            </span>
           </div>
+
+          {/* 1. Hero Diagnostic Gap Card */}
+          <div className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/80 shadow-[0_2px_10px_rgba(0,0,0,0.02)] relative overflow-hidden">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between gap-2 flex-wrap">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-rose-50 border border-rose-200 text-rose-700">
+                  <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
+                  Critical Prerequisite Gap
+                </span>
+                <span className="text-xs text-slate-500 font-mono font-medium">
+                  Identified 45 mins ago
+                </span>
+              </div>
+
+              <div>
+                <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                  Gradient Vanishing in Deep ResNets
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
+                  Struggling with residual connections? Root-cause tracer detected missing mastery in 
+                  <span className="font-semibold text-blue-600"> Activation Function Derivatives</span> and 
+                  <span className="font-semibold text-purple-600"> Matrix Jacobians</span>.
+                </p>
+              </div>
+
+              {/* Progress & Confidence */}
+              <div className="space-y-2 pt-1">
+                <div className="flex justify-between text-xs font-medium">
+                  <span className="text-slate-500">Remediation Progress</span>
+                  <span className="text-slate-900 font-bold font-mono">35% Complete</span>
+                </div>
+                <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                  <div 
+                    className="bg-blue-600 h-2 rounded-full transition-all duration-500" 
+                    style={{ width: '35%' }}
+                  />
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center gap-3 pt-2">
+                <button
+                  onClick={() => navigate('/tutor')}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs shadow-xs transition-all cursor-pointer"
+                >
+                  <span>Launch Socratic AI Tutor</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  onClick={() => navigate('/map')}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 font-medium text-xs transition-all cursor-pointer"
+                >
+                  <span>Inspect DAG Graph</span>
+                </button>
+                <button
+                  onClick={() => navigate('/report/report-001')}
+                  className="inline-flex items-center gap-2 px-3 py-2 text-xs font-semibold text-blue-600 hover:text-blue-700 transition-colors cursor-pointer"
+                >
+                  <span>View Report</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* 2. Four Metric Stat Cards (2x2 Grid) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            
+            {/* Metric 1: Accuracy */}
+            <div className="bg-white hover:border-slate-300 rounded-2xl p-5 border border-slate-200/80 shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition-all duration-150 flex flex-col justify-between min-w-0 group">
+              <div className="flex items-center justify-between mb-2">
+                <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                  <Target className="w-4.5 h-4.5" />
+                </div>
+                <span className="text-[11px] text-emerald-700 font-bold bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full flex items-center gap-1">
+                  <TrendingUp className="w-3 h-3" /> +12%
+                </span>
+              </div>
+              <div>
+                <p className="text-xs font-medium text-slate-500">Overall Accuracy</p>
+                <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1 tracking-tight">78%</p>
+                <p className="text-[11px] text-slate-400 mt-0.5">Based on 45 answered questions</p>
+              </div>
+            </div>
+
+            {/* Metric 2: Topics Mastered */}
+            <div className="bg-white hover:border-slate-300 rounded-2xl p-5 border border-slate-200/80 shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition-all duration-150 flex flex-col justify-between min-w-0 group">
+              <div className="flex items-center justify-between mb-2">
+                <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                  <CheckCircle2 className="w-4.5 h-4.5" />
+                </div>
+                <span className="text-[11px] text-blue-700 font-bold bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-full">
+                  50%
+                </span>
+              </div>
+              <div>
+                <p className="text-xs font-medium text-slate-500">Topics Mastered</p>
+                <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1 tracking-tight">12 / 24</p>
+                <p className="text-[11px] text-slate-400 mt-0.5">Calculus & Database modules</p>
+              </div>
+            </div>
+
+            {/* Metric 3: Current Streak */}
+            <div className="bg-white hover:border-slate-300 rounded-2xl p-5 border border-slate-200/80 shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition-all duration-150 flex flex-col justify-between min-w-0 group">
+              <div className="flex items-center justify-between mb-2">
+                <div className="w-9 h-9 rounded-xl bg-orange-50 text-orange-600 border border-orange-100 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                  <Flame className="w-4.5 h-4.5 fill-orange-500 text-orange-600" />
+                </div>
+                <span className="text-[11px] text-orange-700 font-bold bg-orange-50 border border-orange-200 px-2 py-0.5 rounded-full">
+                  Best Streak
+                </span>
+              </div>
+              <div>
+                <p className="text-xs font-medium text-slate-500">Current Streak</p>
+                <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1 tracking-tight">5 Days</p>
+                <p className="text-[11px] text-slate-400 mt-0.5">Consecutive daily problem solving</p>
+              </div>
+            </div>
+
+            {/* Metric 4: Source Materials */}
+            <div className="bg-white hover:border-slate-300 rounded-2xl p-5 border border-slate-200/80 shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition-all duration-150 flex flex-col justify-between min-w-0 group">
+              <div className="flex items-center justify-between mb-2">
+                <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 border border-purple-100 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                  <BookOpen className="w-4.5 h-4.5" />
+                </div>
+                <span className="text-[11px] text-purple-700 font-bold bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-full">
+                  Indexed
+                </span>
+              </div>
+              <div>
+                <p className="text-xs font-medium text-slate-500">Source Materials</p>
+                <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1 tracking-tight">4 Sources</p>
+                <p className="text-[11px] text-slate-400 mt-0.5">PDF syllabi & lecture videos</p>
+              </div>
+            </div>
+
+          </div>
+
+          {/* 3. Recent Activity Stream */}
+          <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <Clock className="w-4 h-4 text-blue-600" />
+                <span>Recent Learning Stream</span>
+              </h3>
+              <button
+                onClick={() => navigate('/report/report-001')}
+                className="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1 cursor-pointer transition-colors"
+              >
+                <span>View Full History</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {recentActivities.map((act) => (
+                <div
+                  key={act.id}
+                  className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 hover:border-slate-200 flex items-center gap-3 min-w-0 transition-all"
+                >
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${act.iconBg} ${act.iconColor}`}>
+                    <CheckCircle2 className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs font-bold text-slate-900 truncate">
+                      {act.title}
+                    </p>
+                    <p className="text-[10px] text-slate-500 truncate mt-0.5">
+                      {act.subject} • {act.time}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
         </div>
 
       </div>
