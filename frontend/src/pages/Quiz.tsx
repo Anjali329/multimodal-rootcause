@@ -38,26 +38,26 @@ export function Quiz() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-7">
       {/* ── Page Header ───────────────────────────────────────────── */}
       <div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-          Adaptive <span className="bg-gradient-to-r from-[#D946EF] via-[#C084FC] to-[#38BDF8] bg-clip-text text-transparent">Quiz Arena</span>
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+          Adaptive Quiz Arena
         </h1>
-        <p className="text-slate-400 mt-1.5 text-sm">
+        <p className="text-slate-500 mt-1 text-sm">
           Targeted diagnostic practice sessions with confidence-weighted evaluation to isolate root misconceptions
         </p>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-8">
+      <div className="flex flex-col lg:flex-row gap-7">
         
         {/* ── Main Configuration Column ────────────────────────────── */}
         <div className="flex-1 space-y-6">
           
           {/* 1. Select Topics */}
-          <div className="bg-white/[0.03] rounded-3xl p-6 sm:p-7 border border-white/[0.08] shadow-xl backdrop-blur-md">
-            <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2.5 mb-5">
-              <Target className="w-5 h-5 text-blue-400" />
+          <div className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/80 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2 mb-5">
+              <Target className="w-5 h-5 text-blue-600" />
               <span>1. Select Target Concepts</span>
             </h2>
             
@@ -70,22 +70,22 @@ export function Quiz() {
                       <label 
                         key={concept.id}
                         className={cn(
-                          "flex items-start gap-3 p-3.5 rounded-2xl border cursor-pointer transition-all duration-150 backdrop-blur-md",
+                          "flex items-start gap-3 p-3.5 rounded-xl border cursor-pointer transition-all duration-150",
                           selectedConcepts.has(concept.id)
-                            ? "bg-blue-600/20 border-blue-500/50 shadow-md shadow-blue-500/10 text-white"
-                            : "bg-white/[0.03] border-white/[0.06] hover:border-blue-400/30 hover:bg-white/[0.05] text-slate-300"
+                            ? "bg-blue-50 border-blue-400 text-slate-900 shadow-2xs"
+                            : "bg-slate-50/50 border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700"
                         )}
                       >
                         <input
                           type="checkbox"
-                          className="mt-1 w-4 h-4 rounded border-white/20 bg-white/10 text-blue-600 focus:ring-blue-500"
+                          className="mt-1 w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
                           checked={selectedConcepts.has(concept.id)}
                           onChange={() => toggleConcept(concept.id)}
                         />
                         <div className="flex-1 min-w-0">
                           <p className="text-xs sm:text-sm font-semibold truncate">{concept.name}</p>
                           <div className="flex items-center gap-2 mt-1.5">
-                            <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
+                            <div className="flex-1 h-1.5 bg-slate-200 rounded-full overflow-hidden">
                               <div 
                                 className="h-full rounded-full transition-all"
                                 style={{ 
@@ -94,7 +94,7 @@ export function Quiz() {
                                 }}
                               />
                             </div>
-                            <span className="text-[10px] font-mono text-slate-400">{Math.round(concept.mastery)}%</span>
+                            <span className="text-[10px] font-mono text-slate-500">{Math.round(concept.mastery)}%</span>
                           </div>
                         </div>
                       </label>
@@ -106,25 +106,25 @@ export function Quiz() {
           </div>
 
           {/* 2. Quiz Settings */}
-          <div className="bg-white/[0.03] rounded-3xl p-6 sm:p-7 border border-white/[0.08] shadow-xl backdrop-blur-md space-y-6">
-            <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2.5">
-              <Settings className="w-5 h-5 text-blue-400" />
+          <div className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/80 shadow-[0_2px_10px_rgba(0,0,0,0.02)] space-y-6">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+              <Settings className="w-5 h-5 text-blue-600" />
               <span>2. Session Parameters</span>
             </h2>
             
             {/* Question count */}
             <div>
-              <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-3">Number of Questions</label>
+              <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-3">Number of Questions</label>
               <div className="flex flex-wrap gap-2.5">
                 {[5, 10, 15, 20].map(count => (
                   <button
                     key={count}
                     onClick={() => setQuestionCount(count)}
                     className={cn(
-                      "px-5 py-2 rounded-full text-xs font-semibold transition-all cursor-pointer",
+                      "px-5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer",
                       questionCount === count
-                        ? "bg-[#2563EB] text-white shadow-md shadow-blue-500/25"
-                        : "bg-white/[0.04] text-slate-300 border border-white/[0.08] hover:bg-white/[0.08] hover:text-white"
+                        ? "bg-blue-600 text-white shadow-xs"
+                        : "bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100"
                     )}
                   >
                     {count} Questions
@@ -135,7 +135,7 @@ export function Quiz() {
 
             {/* Difficulty */}
             <div>
-              <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-3">Adaptive Difficulty Mode</label>
+              <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-3">Adaptive Difficulty Mode</label>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {['easy', 'medium', 'hard', 'adaptive'].map(level => (
                   <button
@@ -144,8 +144,8 @@ export function Quiz() {
                     className={cn(
                       "py-2.5 px-3 rounded-xl border text-xs font-bold capitalize transition-all cursor-pointer",
                       difficulty === level
-                        ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-blue-400/50 shadow-md shadow-blue-500/20"
-                        : "bg-white/[0.03] border-white/[0.08] text-slate-300 hover:border-white/20 hover:text-white"
+                        ? "bg-blue-600 text-white border-blue-600 shadow-xs"
+                        : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100"
                     )}
                   >
                     {level === 'adaptive' ? '✨ Adaptive' : level}
@@ -155,16 +155,16 @@ export function Quiz() {
             </div>
 
             {/* Timer Toggle */}
-            <div className="pt-2 border-t border-white/[0.08]">
+            <div className="pt-2 border-t border-slate-100">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-blue-400" /> Time Constraint
+                <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-blue-600" /> Time Constraint
                 </label>
                 <button 
                   onClick={() => setTimerEnabled(!timerEnabled)}
                   className={cn(
                     "relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors",
-                    timerEnabled ? "bg-[#2563EB]" : "bg-white/10"
+                    timerEnabled ? "bg-blue-600" : "bg-slate-200"
                   )}
                 >
                   <span 
@@ -185,8 +185,8 @@ export function Quiz() {
                       className={cn(
                         "px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer",
                         timerMinutes === mins
-                          ? "bg-cyan-500/20 border border-cyan-400 text-cyan-200"
-                          : "bg-white/[0.04] border border-white/[0.08] text-slate-300 hover:bg-white/[0.08]"
+                          ? "bg-blue-50 border border-blue-400 text-blue-700 font-bold"
+                          : "bg-slate-50 border border-slate-200 text-slate-700 hover:bg-slate-100"
                       )}
                     >
                       {mins} mins
@@ -201,7 +201,7 @@ export function Quiz() {
             <button
               onClick={handleStartQuiz}
               disabled={selectedConcepts.size === 0}
-              className="px-8 py-3.5 bg-[#2563EB] hover:bg-blue-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold rounded-full shadow-lg shadow-blue-500/25 transition-all flex items-center gap-2.5 text-sm sm:text-base cursor-pointer hover:scale-[1.02]"
+              className="px-8 py-3.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold rounded-xl shadow-xs transition-all flex items-center gap-2.5 text-sm sm:text-base cursor-pointer"
             >
               <Play className="w-4 h-4 fill-current" />
               <span>Launch Assessment ({selectedConcepts.size} concepts)</span>
@@ -211,12 +211,12 @@ export function Quiz() {
 
         {/* ── Sidebar Info Column ──────────────────────────────────── */}
         <div className="w-full lg:w-80 space-y-6">
-          <div className="bg-gradient-to-br from-[#111C33] via-[#0E172A] to-[#0A101E] rounded-3xl p-6 border border-blue-400/25 shadow-xl text-white">
-            <h3 className="font-bold text-base mb-1.5 flex items-center gap-2">
-              <Brain className="w-5 h-5 text-purple-400" />
+          <div className="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-[0_2px_10px_rgba(0,0,0,0.02)] text-slate-900">
+            <h3 className="font-bold text-base mb-1 flex items-center gap-2">
+              <Brain className="w-5 h-5 text-purple-600" />
               <span>Smart Presets</span>
             </h3>
-            <p className="text-slate-400 text-xs mb-4">Jump straight into targeted practice without manual setup.</p>
+            <p className="text-slate-500 text-xs mb-4">Jump straight into targeted practice without manual setup.</p>
             
             <div className="space-y-3">
               <button 
@@ -224,12 +224,12 @@ export function Quiz() {
                   setSelectedConcepts(new Set(['c-chain-rule', 'c-product-rule']));
                   handleStartQuiz();
                 }}
-                className="w-full bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] hover:border-amber-400/30 transition-all p-3.5 rounded-2xl text-left flex items-start gap-3 cursor-pointer group"
+                className="w-full bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-all p-3.5 rounded-xl text-left flex items-start gap-3 cursor-pointer group"
               >
-                <Target className="w-5 h-5 text-amber-400 mt-0.5 shrink-0 group-hover:scale-110 transition-transform" />
+                <Target className="w-5 h-5 text-amber-500 mt-0.5 shrink-0 group-hover:scale-110 transition-transform" />
                 <div>
-                  <div className="font-bold text-xs text-white">Target Weak Gaps</div>
-                  <div className="text-[11px] text-slate-400 mt-0.5">Calculus Chain Rule & Function Composition</div>
+                  <div className="font-bold text-xs text-slate-900">Target Weak Gaps</div>
+                  <div className="text-[11px] text-slate-500 mt-0.5">Calculus Chain Rule & Function Composition</div>
                 </div>
               </button>
               
@@ -238,31 +238,31 @@ export function Quiz() {
                   setSelectedConcepts(new Set(demoConcepts.map(c => c.id)));
                   handleStartQuiz();
                 }}
-                className="w-full bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] hover:border-emerald-400/30 transition-all p-3.5 rounded-2xl text-left flex items-start gap-3 cursor-pointer group"
+                className="w-full bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-all p-3.5 rounded-xl text-left flex items-start gap-3 cursor-pointer group"
               >
-                <TrendingUp className="w-5 h-5 text-emerald-400 mt-0.5 shrink-0 group-hover:scale-110 transition-transform" />
+                <TrendingUp className="w-5 h-5 text-emerald-600 mt-0.5 shrink-0 group-hover:scale-110 transition-transform" />
                 <div>
-                  <div className="font-bold text-xs text-white">Full Curriculum Check</div>
-                  <div className="text-[11px] text-slate-400 mt-0.5">All 12 mapped concepts comprehensive test</div>
+                  <div className="font-bold text-xs text-slate-900">Full Curriculum Check</div>
+                  <div className="text-[11px] text-slate-500 mt-0.5">All 12 mapped concepts comprehensive test</div>
                 </div>
               </button>
             </div>
           </div>
 
-          <div className="bg-white/[0.03] rounded-3xl p-6 border border-white/[0.08] shadow-xl backdrop-blur-md">
-            <h3 className="font-bold text-sm text-white flex items-center gap-2 mb-4">
-              <Award className="w-4 h-4 text-cyan-400" /> Recent Assessment
+          <div className="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+            <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2 mb-4">
+              <Award className="w-4 h-4 text-blue-600" /> Recent Assessment
             </h3>
             
-            <div className="p-4 rounded-2xl border border-white/[0.06] bg-white/[0.02]">
+            <div className="p-4 rounded-xl border border-slate-100 bg-slate-50/60">
               <div className="flex justify-between items-start mb-1.5">
-                <div className="font-bold text-xs text-white">Calculus Derivatives Quiz</div>
-                <span className="inline-flex items-center gap-1 bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
-                  <CheckCircle2 className="w-3 h-3" /> {demoQuiz.score}/{demoQuiz.questions.length}
+                <div className="font-bold text-xs text-slate-900">Calculus Derivatives Quiz</div>
+                <span className="inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-600" /> {demoQuiz.score}/{demoQuiz.questions.length}
                 </span>
               </div>
               <div className="text-[11px] text-slate-500 mb-3">{demoQuiz.completedAt ? formatDate(demoQuiz.completedAt) : 'Recently completed'}</div>
-              <Link to={`/report/${demoQuiz.id}`} className="text-xs font-semibold text-blue-300 hover:text-white transition-colors">
+              <Link to={`/report/${demoQuiz.id}`} className="text-xs font-semibold text-blue-600 hover:text-blue-700 transition-colors">
                 View Diagnostic Report →
               </Link>
             </div>

@@ -42,11 +42,11 @@ export function EvalLab() {
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'retrieval': return 'bg-blue-500/15 text-blue-300 border-blue-500/30';
-      case 'generation': return 'bg-purple-500/15 text-purple-300 border-purple-500/30';
-      case 'grounding': return 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30';
-      case 'learning': return 'bg-amber-500/15 text-amber-300 border-amber-500/30';
-      default: return 'bg-white/[0.05] text-slate-300 border-white/[0.08]';
+      case 'retrieval': return 'bg-blue-50 text-blue-700 border-blue-200';
+      case 'generation': return 'bg-purple-50 text-purple-700 border-purple-200';
+      case 'grounding': return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+      case 'learning': return 'bg-amber-50 text-amber-700 border-amber-200';
+      default: return 'bg-slate-50 text-slate-700 border-slate-200';
     }
   };
 
@@ -68,23 +68,23 @@ export function EvalLab() {
   }, [selectedRun]);
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto">
+    <div className="space-y-7 max-w-7xl mx-auto">
       {/* ── Page Header ───────────────────────────────────────────── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            Evaluation & <span className="bg-gradient-to-r from-[#D946EF] via-[#C084FC] to-[#38BDF8] bg-clip-text text-transparent">Faithfulness Lab</span>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+            Evaluation & Faithfulness Lab
           </h1>
-          <p className="text-slate-400 mt-1.5 text-sm">
+          <p className="text-slate-500 mt-1 text-sm">
             Rigorously evaluated retrieval faithfulness, citation precision, context recall, and comparative ablation benchmarks
           </p>
         </div>
         <div className="flex gap-2.5">
-          <button className="flex items-center gap-2 px-5 py-2.5 bg-white/[0.06] border border-white/[0.1] text-slate-200 text-xs font-semibold rounded-full hover:bg-white/[0.1] transition-all cursor-pointer shadow-sm">
+          <button className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl hover:bg-slate-50 transition-all cursor-pointer shadow-2xs">
             <Download className="w-4 h-4" />
             <span className="hidden sm:inline">Export Metrics</span>
           </button>
-          <button className="flex items-center gap-2 px-6 py-2.5 bg-[#2563EB] hover:bg-blue-600 text-white text-xs font-bold rounded-full shadow-lg shadow-blue-500/25 transition-all cursor-pointer hover:scale-[1.02]">
+          <button className="flex items-center gap-2 px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-xs transition-all cursor-pointer">
             <Play className="w-4 h-4 fill-current" />
             <span>Run Benchmark</span>
           </button>
@@ -92,15 +92,15 @@ export function EvalLab() {
       </div>
 
       {/* ── Demo Notice Banner ─────────────────────────────────────── */}
-      <div className="bg-amber-950/40 border border-amber-500/30 rounded-2xl p-4 flex items-center gap-3 shadow-lg">
-        <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0" />
-        <p className="text-xs sm:text-sm text-amber-200 font-medium">
+      <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-center gap-3">
+        <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0" />
+        <p className="text-xs sm:text-sm text-amber-800 font-medium">
           Demonstration benchmark suite: Evaluating RootCause Tutor vs Ungrounded LLM baseline across 150 calculus & database diagnostic test cases.
         </p>
       </div>
 
       {/* ── Run Selector ──────────────────────────────────────────── */}
-      <div className="bg-white/[0.03] rounded-2xl border border-white/[0.08] p-1.5 flex overflow-x-auto shadow-xl backdrop-blur-md gap-1.5">
+      <div className="bg-white rounded-xl border border-slate-200 p-1.5 flex overflow-x-auto shadow-2xs gap-1.5">
         {demoEvalRuns.map(run => (
           <button
             key={run.id}
@@ -108,29 +108,29 @@ export function EvalLab() {
             className={cn(
               "flex flex-col px-4 py-2.5 min-w-[210px] rounded-xl text-left transition-all flex-1 cursor-pointer",
               selectedRunId === run.id 
-                ? "bg-[#2563EB]/20 border border-blue-400/50 shadow-md shadow-blue-500/15" 
-                : "hover:bg-white/[0.04] border border-transparent"
+                ? "bg-blue-50 border border-blue-400 text-slate-900" 
+                : "hover:bg-slate-50 border border-transparent text-slate-600"
             )}
           >
             <div className="flex items-center justify-between mb-1">
               <span className={cn(
                 "font-bold text-xs sm:text-sm",
-                selectedRunId === run.id ? "text-white" : "text-slate-300"
+                selectedRunId === run.id ? "text-slate-900" : "text-slate-700"
               )}>
                 {run.name}
               </span>
               <span className={cn(
                 "text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider border",
-                run.status === 'completed' ? "bg-emerald-500/15 text-emerald-300 border-emerald-500/30" : 
-                run.status === 'failed' ? "bg-rose-500/15 text-rose-300 border-rose-500/30" : "bg-blue-500/15 text-blue-300 border-blue-500/30"
+                run.status === 'completed' ? "bg-emerald-50 text-emerald-700 border-emerald-200" : 
+                run.status === 'failed' ? "bg-rose-50 text-rose-700 border-rose-200" : "bg-blue-50 text-blue-700 border-blue-200"
               )}>
                 {run.status}
               </span>
             </div>
-            <div className="flex items-center gap-3 text-[11px] text-slate-400">
+            <div className="flex items-center gap-3 text-[11px] text-slate-500">
               <span>{formatDate(run.startedAt)}</span>
               <span className="flex items-center gap-1">
-                <Database className="w-3 h-3 text-cyan-400" />
+                <Database className="w-3 h-3 text-blue-600" />
                 {run.testCases.length} tests
               </span>
             </div>
@@ -140,17 +140,17 @@ export function EvalLab() {
 
       {/* ── Key Metrics Grid ──────────────────────────────────────── */}
       <div className="space-y-6">
-        <h2 className="text-lg font-bold text-white tracking-tight flex items-center gap-2">
+        <h2 className="text-lg font-bold text-slate-900 tracking-tight flex items-center gap-2">
           <span>Key Evaluation Metrics</span>
         </h2>
         
         {Object.entries(metricsByCategory).map(([category, metrics]) => (
           <div key={category} className="space-y-3">
-            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
               <div className={cn("w-2 h-2 rounded-full", 
-                category === 'retrieval' ? 'bg-blue-400 shadow-[0_0_8px_#60a5fa]' :
-                category === 'generation' ? 'bg-purple-400 shadow-[0_0_8px_#c084fc]' :
-                category === 'grounding' ? 'bg-emerald-400 shadow-[0_0_8px_#34d399]' : 'bg-amber-400 shadow-[0_0_8px_#fbbf24]'
+                category === 'retrieval' ? 'bg-blue-600' :
+                category === 'generation' ? 'bg-purple-600' :
+                category === 'grounding' ? 'bg-emerald-600' : 'bg-amber-600'
               )} />
               <span>{category} metrics</span>
             </h3>
@@ -160,10 +160,10 @@ export function EvalLab() {
                 const isBetter = diff > 0;
                 
                 return (
-                  <div key={metric.name} className="bg-white/[0.03] hover:bg-white/[0.06] hover:border-blue-400/40 rounded-2xl border border-white/[0.08] p-5 shadow-xl flex flex-col justify-between transition-all duration-200 backdrop-blur-md group">
+                  <div key={metric.name} className="bg-white hover:border-slate-300 rounded-2xl border border-slate-200/80 p-5 shadow-[0_2px_10px_rgba(0,0,0,0.02)] flex flex-col justify-between transition-all duration-150 group">
                     <div>
                       <div className="flex justify-between items-start mb-2.5">
-                        <span className="font-bold text-white text-xs sm:text-sm">{metric.name}</span>
+                        <span className="font-bold text-slate-900 text-xs sm:text-sm">{metric.name}</span>
                         <span className={cn(
                           "text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full border",
                           getCategoryColor(metric.category)
@@ -173,13 +173,13 @@ export function EvalLab() {
                       </div>
                       
                       <div className="flex items-baseline gap-2 mb-1.5">
-                        <span className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                        <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                           {metric.value > 1 ? metric.value.toFixed(1) : formatPercentage(metric.value)}
                         </span>
                         {metric.baseline && (
                           <span className={cn(
                             "flex items-center text-xs font-semibold",
-                            isBetter ? "text-emerald-400" : diff < 0 ? "text-rose-400" : "text-slate-400"
+                            isBetter ? "text-emerald-600" : diff < 0 ? "text-rose-600" : "text-slate-500"
                           )}>
                             {isBetter ? <TrendingUp className="w-3.5 h-3.5 mr-0.5" /> : 
                              diff < 0 ? <TrendingDown className="w-3.5 h-3.5 mr-0.5" /> : null}
@@ -188,19 +188,19 @@ export function EvalLab() {
                         )}
                       </div>
                       
-                      <p className="text-xs text-slate-400 mb-4 line-clamp-2 leading-relaxed" title={metric.description}>
+                      <p className="text-xs text-slate-500 mb-4 line-clamp-2 leading-relaxed" title={metric.description}>
                         {metric.description}
                       </p>
                     </div>
                     
-                    <div className="pt-3 border-t border-white/[0.06]">
-                      <div className="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
+                    <div className="pt-3 border-t border-slate-100">
+                      <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
                         <div 
                           className={cn(
                             "h-1.5 rounded-full",
-                            metric.value > 0.8 ? "bg-emerald-400" : 
-                            metric.value > 0.6 ? "bg-blue-400" : 
-                            metric.value > 0.4 ? "bg-amber-400" : "bg-rose-400"
+                            metric.value > 0.8 ? "bg-emerald-500" : 
+                            metric.value > 0.6 ? "bg-blue-600" : 
+                            metric.value > 0.4 ? "bg-amber-500" : "bg-rose-500"
                           )}
                           style={{ width: `${metric.value <= 1 ? metric.value * 100 : Math.min(100, metric.value * 10)}%` }}
                         />
@@ -215,8 +215,8 @@ export function EvalLab() {
       </div>
 
       {/* ── Comparison Chart ──────────────────────────────────────── */}
-      <div className="bg-white/[0.03] rounded-3xl border border-white/[0.08] p-6 sm:p-8 shadow-xl backdrop-blur-md">
-        <h2 className="text-base sm:text-lg font-bold text-white mb-6 tracking-tight">
+      <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-7 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+        <h2 className="text-base sm:text-lg font-bold text-slate-900 mb-6 tracking-tight">
           System vs Baseline Comparative Evaluation
         </h2>
         <div className="h-80 w-full">
@@ -225,51 +225,51 @@ export function EvalLab() {
               data={chartData}
               margin={{ top: 5, right: 30, left: 10, bottom: 5 }}
             >
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255, 255, 255, 0.08)" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
               <XAxis 
                 dataKey="name" 
                 axisLine={false} 
                 tickLine={false} 
-                tick={{ fill: '#94A3B8', fontSize: 11 }} 
+                tick={{ fill: '#64748B', fontSize: 11 }} 
                 dy={10}
               />
               <YAxis 
                 axisLine={false} 
                 tickLine={false} 
-                tick={{ fill: '#94A3B8', fontSize: 11 }} 
+                tick={{ fill: '#64748B', fontSize: 11 }} 
                 dx={-10}
               />
               <Tooltip 
-                cursor={{ fill: 'rgba(255, 255, 255, 0.04)' }}
+                cursor={{ fill: 'rgba(241, 245, 249, 0.6)' }}
                 contentStyle={{ 
-                  borderRadius: '16px', 
-                  backgroundColor: '#090E1D',
-                  borderColor: 'rgba(255, 255, 255, 0.15)',
-                  boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5)',
-                  color: '#fff'
+                  borderRadius: '12px', 
+                  backgroundColor: '#ffffff',
+                  borderColor: '#e2e8f0',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)',
+                  color: '#0f172a'
                 }}
               />
-              <Legend wrapperStyle={{ paddingTop: '20px', color: '#94A3B8' }} />
+              <Legend wrapperStyle={{ paddingTop: '20px', color: '#64748B' }} />
               <Bar dataKey="System" fill="#2563EB" radius={[6, 6, 0, 0]} maxBarSize={36} />
-              <Bar dataKey="Baseline" fill="#475569" radius={[6, 6, 0, 0]} maxBarSize={36} />
+              <Bar dataKey="Baseline" fill="#94A3B8" radius={[6, 6, 0, 0]} maxBarSize={36} />
             </BarChart>
           </ResponsiveContainer>
         </div>
       </div>
 
       {/* ── Test Cases Table ──────────────────────────────────────── */}
-      <div className="bg-white/[0.03] rounded-3xl border border-white/[0.08] shadow-xl overflow-hidden backdrop-blur-md">
-        <div className="p-6 border-b border-white/[0.08] flex justify-between items-center">
+      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-[0_2px_10px_rgba(0,0,0,0.02)] overflow-hidden">
+        <div className="p-6 border-b border-slate-100 flex justify-between items-center">
           <div>
-            <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">Test Cases Breakdown</h2>
-            <p className="text-xs text-slate-400 mt-0.5">Automated benchmark runs across {selectedRun.testCases.length} prompt variations</p>
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">Test Cases Breakdown</h2>
+            <p className="text-xs text-slate-500 mt-0.5">Automated benchmark runs across {selectedRun.testCases.length} prompt variations</p>
           </div>
         </div>
         
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-white/[0.08] bg-white/[0.02] text-[11px] uppercase tracking-wider text-slate-400 font-bold">
+              <tr className="border-b border-slate-100 bg-slate-50/70 text-[11px] uppercase tracking-wider text-slate-500 font-bold">
                 <th className="p-4 w-10"></th>
                 <th className="p-4">Diagnostic Query</th>
                 <th className="p-4 hidden md:table-cell">Verdict</th>
@@ -277,50 +277,50 @@ export function EvalLab() {
                 <th className="p-4">Relevancy</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/[0.04]">
+            <tbody className="divide-y divide-slate-100">
               {selectedRun.testCases.map(testCase => (
                 <Fragment key={testCase.id}>
                   <tr 
-                    className="hover:bg-white/[0.04] cursor-pointer transition-colors"
+                    className="hover:bg-slate-50/70 cursor-pointer transition-colors"
                     onClick={() => toggleTestCase(testCase.id)}
                   >
-                    <td className="p-4 text-slate-500">
+                    <td className="p-4 text-slate-400">
                       {expandedTestCases[testCase.id] ? 
-                        <ChevronDown className="w-4 h-4 text-slate-300" /> : 
-                        <ChevronRight className="w-4 h-4 text-slate-500" />
+                        <ChevronDown className="w-4 h-4 text-slate-600" /> : 
+                        <ChevronRight className="w-4 h-4 text-slate-400" />
                       }
                     </td>
                     <td className="p-4">
                       <div className="flex items-center gap-2">
                         <span className="md:hidden">
                           {testCase.isCorrect ? 
-                            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" /> : 
-                            <XCircle className="w-4 h-4 text-rose-400 shrink-0" />
+                            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" /> : 
+                            <XCircle className="w-4 h-4 text-rose-600 shrink-0" />
                           }
                         </span>
-                        <span className="font-semibold text-xs sm:text-sm text-white line-clamp-1">{testCase.query}</span>
+                        <span className="font-semibold text-xs sm:text-sm text-slate-900 line-clamp-1">{testCase.query}</span>
                       </div>
                     </td>
                     <td className="p-4 hidden md:table-cell">
                       {testCase.isCorrect ? (
-                        <div className="flex items-center gap-1.5 text-emerald-300 bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-0.5 rounded-full text-xs font-semibold w-fit">
-                          <CheckCircle2 className="w-3.5 h-3.5" />
+                        <div className="flex items-center gap-1.5 text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full text-xs font-semibold w-fit">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                           Passed
                         </div>
                       ) : (
-                        <div className="flex items-center gap-1.5 text-rose-300 bg-rose-500/15 border border-rose-500/30 px-2.5 py-0.5 rounded-full text-xs font-semibold w-fit">
-                          <XCircle className="w-3.5 h-3.5" />
+                        <div className="flex items-center gap-1.5 text-rose-700 bg-rose-50 border border-rose-200 px-2.5 py-0.5 rounded-full text-xs font-semibold w-fit">
+                          <XCircle className="w-3.5 h-3.5 text-rose-600" />
                           Failed
                         </div>
                       )}
                     </td>
                     <td className="p-4">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs sm:text-sm font-bold text-white">{testCase.faithfulness?.toFixed(2) || 'N/A'}</span>
+                        <span className="text-xs sm:text-sm font-bold text-slate-900">{testCase.faithfulness?.toFixed(2) || 'N/A'}</span>
                         {testCase.faithfulness && (
-                          <div className="w-14 h-1.5 bg-white/10 rounded-full hidden sm:block">
+                          <div className="w-14 h-1.5 bg-slate-100 rounded-full hidden sm:block">
                             <div 
-                              className={cn("h-1.5 rounded-full", testCase.faithfulness > 0.8 ? "bg-emerald-400" : "bg-amber-400")}
+                              className={cn("h-1.5 rounded-full", testCase.faithfulness > 0.8 ? "bg-emerald-500" : "bg-amber-500")}
                               style={{ width: `${testCase.faithfulness * 100}%` }}
                             />
                           </div>
@@ -329,11 +329,11 @@ export function EvalLab() {
                     </td>
                     <td className="p-4">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs sm:text-sm font-bold text-white">{testCase.relevancy?.toFixed(2) || 'N/A'}</span>
+                        <span className="text-xs sm:text-sm font-bold text-slate-900">{testCase.relevancy?.toFixed(2) || 'N/A'}</span>
                         {testCase.relevancy && (
-                          <div className="w-14 h-1.5 bg-white/10 rounded-full hidden sm:block">
+                          <div className="w-14 h-1.5 bg-slate-100 rounded-full hidden sm:block">
                             <div 
-                              className={cn("h-1.5 rounded-full", testCase.relevancy > 0.8 ? "bg-cyan-400" : "bg-amber-400")}
+                              className={cn("h-1.5 rounded-full", testCase.relevancy > 0.8 ? "bg-blue-600" : "bg-amber-500")}
                               style={{ width: `${testCase.relevancy * 100}%` }}
                             />
                           </div>
@@ -343,20 +343,20 @@ export function EvalLab() {
                   </tr>
                   
                   {expandedTestCases[testCase.id] && (
-                    <tr className="bg-white/[0.02]">
-                      <td colSpan={5} className="p-0 border-b border-white/[0.06]">
-                        <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <tr className="bg-slate-50/50">
+                      <td colSpan={5} className="p-0 border-b border-slate-100">
+                        <div className="p-5 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
-                            <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Ground Truth Target</h4>
-                            <div className="bg-white/[0.03] p-4 rounded-xl border border-white/[0.08] text-xs text-slate-300 leading-relaxed font-mono">
-                              {testCase.expectedAnswer || <span className="text-slate-500 italic">No expected answer provided</span>}
+                            <h4 className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Ground Truth Target</h4>
+                            <div className="bg-white p-4 rounded-xl border border-slate-200 text-xs text-slate-700 leading-relaxed font-mono">
+                              {testCase.expectedAnswer || <span className="text-slate-400 italic">No expected answer provided</span>}
                             </div>
                           </div>
                           <div>
-                            <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Model Generated Answer</h4>
+                            <h4 className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Model Generated Answer</h4>
                             <div className={cn(
                               "p-4 rounded-xl border text-xs leading-relaxed font-mono",
-                              testCase.isCorrect ? "bg-emerald-950/20 border-emerald-500/30 text-emerald-200" : "bg-rose-950/20 border-rose-500/30 text-rose-200"
+                              testCase.isCorrect ? "bg-emerald-50 border-emerald-200 text-emerald-900" : "bg-rose-50 border-rose-200 text-rose-900"
                             )}>
                               {testCase.actualAnswer}
                             </div>

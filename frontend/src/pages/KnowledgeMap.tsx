@@ -27,19 +27,19 @@ import type { Concept } from '@/types';
 import { Link } from 'react-router-dom';
 import { cn, getMasteryColor, getMasteryLabel, formatDate } from '@/lib/utils';
 
-// Custom Dark Glass Node Component matching landing page aesthetic
+// Custom Node Component matching clean light aesthetic
 const ConceptNode = ({ data }: NodeProps<Node>) => {
   const concept = data as unknown as Concept;
   const masteryColor = getMasteryColor(concept.mastery);
   
   const bgClass = concept.mastery < 40 
-    ? 'bg-rose-950/50 border-rose-500/40 shadow-[0_0_15px_rgba(244,63,94,0.15)]' 
+    ? 'bg-rose-50 border-rose-200 shadow-xs' 
     : concept.mastery < 70 
-      ? 'bg-amber-950/50 border-amber-500/40 shadow-[0_0_15px_rgba(245,158,11,0.15)]' 
-      : 'bg-emerald-950/50 border-emerald-500/40 shadow-[0_0_15px_rgba(16,185,129,0.15)]';
+      ? 'bg-amber-50 border-amber-200 shadow-xs' 
+      : 'bg-emerald-50 border-emerald-200 shadow-xs';
       
   const dotColor = concept.importance === 'high' 
-    ? 'bg-blue-400 shadow-[0_0_8px_#60a5fa]' 
+    ? 'bg-blue-600 shadow-[0_0_8px_#3b82f6]' 
     : concept.importance === 'medium' 
       ? 'bg-slate-400' 
       : 'bg-transparent';
@@ -47,23 +47,23 @@ const ConceptNode = ({ data }: NodeProps<Node>) => {
   const isReviewDue = concept.reviewDue && new Date(concept.reviewDue) <= new Date();
 
   return (
-    <div className={cn('relative rounded-2xl border-2 backdrop-blur-md min-w-[170px] p-3.5 transition-all hover:scale-105', bgClass)}>
-      <Handle type="target" position={Position.Top} className="w-2.5 h-2.5 bg-blue-400 border border-white" />
+    <div className={cn('relative rounded-xl border-2 min-w-[170px] p-3 transition-all hover:scale-105 bg-white', bgClass)}>
+      <Handle type="target" position={Position.Top} className="w-2.5 h-2.5 bg-blue-600 border border-white" />
       
       <div className="flex justify-between items-start mb-2">
-        <h3 className="font-bold text-sm text-white tracking-tight">{concept.name}</h3>
+        <h3 className="font-bold text-sm text-slate-900 tracking-tight">{concept.name}</h3>
         <div className="flex gap-1.5 items-center ml-2">
-          {isReviewDue && <Clock className="w-3.5 h-3.5 text-amber-400" />}
+          {isReviewDue && <Clock className="w-3.5 h-3.5 text-amber-600" />}
           <div className={cn('w-2 h-2 rounded-full', dotColor)} title={`Importance: ${concept.importance}`} />
         </div>
       </div>
       
-      <div className="flex justify-between items-center text-xs pt-1 border-t border-white/[0.08]">
+      <div className="flex justify-between items-center text-xs pt-1 border-t border-slate-200/60">
         <span className={cn('font-extrabold', masteryColor)}>{concept.mastery}%</span>
-        <span className="text-slate-400 font-medium text-[11px]">{getMasteryLabel(concept.mastery)}</span>
+        <span className="text-slate-500 font-medium text-[11px]">{getMasteryLabel(concept.mastery)}</span>
       </div>
       
-      <Handle type="source" position={Position.Bottom} className="w-2.5 h-2.5 bg-blue-400 border border-white" />
+      <Handle type="source" position={Position.Bottom} className="w-2.5 h-2.5 bg-blue-600 border border-white" />
     </div>
   );
 };
@@ -146,7 +146,7 @@ export function KnowledgeMap() {
   }, []);
 
   return (
-    <div className="w-full h-[calc(100vh-6.5rem)] flex relative bg-white/[0.02] border border-white/[0.08] rounded-3xl overflow-hidden shadow-2xl backdrop-blur-xl">
+    <div className="w-full h-[calc(100vh-6.5rem)] flex relative bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-2xs">
       <div className="flex-1 h-full">
         <ReactFlow
           nodes={filteredNodes}
@@ -156,21 +156,21 @@ export function KnowledgeMap() {
           onNodeClick={onNodeClick}
           nodeTypes={nodeTypes}
           fitView
-          className="bg-transparent"
+          className="bg-[#F8FAFC]"
         >
-          <Background color="#ffffff0d" gap={20} />
-          <Controls className="bg-[#090E1D] border border-white/[0.08] text-white fill-white rounded-xl overflow-hidden shadow-xl" />
+          <Background color="#cbd5e1" gap={20} />
+          <Controls className="bg-white border border-slate-200 text-slate-700 fill-slate-700 rounded-xl overflow-hidden shadow-xs" />
           <MiniMap 
             nodeColor={node => {
               const mastery = Number((node.data as any)?.mastery || 0);
               return mastery < 40 ? '#f43f5e' : mastery < 70 ? '#f59e0b' : '#10b981';
             }}
-            maskColor="rgba(8, 13, 26, 0.75)"
-            className="bg-[#090E1D] border border-white/[0.08] rounded-xl overflow-hidden"
+            maskColor="rgba(248, 250, 252, 0.75)"
+            className="bg-white border border-slate-200 rounded-xl overflow-hidden"
           />
           
           {/* Top Left Search & Filter Panel */}
-          <Panel position="top-left" className="bg-[#0A101F]/90 backdrop-blur-xl p-4 rounded-2xl shadow-2xl border border-white/[0.08]">
+          <Panel position="top-left" className="bg-white/95 backdrop-blur-md p-4 rounded-xl shadow-xs border border-slate-200">
             <div className="flex flex-col gap-3">
               <div className="relative">
                 <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
@@ -179,7 +179,7 @@ export function KnowledgeMap() {
                   placeholder="Search prerequisite concepts..."
                   value={searchTerm}
                   onChange={e => setSearchTerm(e.target.value)}
-                  className="pl-9 pr-4 py-2 border border-white/[0.12] bg-white/[0.04] text-white placeholder-slate-500 rounded-xl text-xs sm:text-sm w-64 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400"
+                  className="pl-9 pr-4 py-2 border border-slate-200 bg-slate-50 text-slate-900 placeholder-slate-400 rounded-xl text-xs sm:text-sm w-64 focus:outline-none focus:border-blue-500 focus:bg-white"
                 />
               </div>
               <div className="flex flex-wrap gap-1.5 max-w-sm">
@@ -190,8 +190,8 @@ export function KnowledgeMap() {
                     className={cn(
                       "px-3 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer",
                       activeTopic === topic 
-                        ? "bg-[#2563EB] text-white shadow-md shadow-blue-500/25" 
-                        : "bg-white/[0.04] text-slate-300 border border-white/[0.08] hover:bg-white/[0.08] hover:text-white"
+                        ? "bg-blue-600 text-white shadow-xs" 
+                        : "bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100"
                     )}
                   >
                     {topic}
@@ -202,20 +202,20 @@ export function KnowledgeMap() {
           </Panel>
 
           {/* Bottom Left Mastery Legend Panel */}
-          <Panel position="bottom-left" className="bg-[#0A101F]/90 backdrop-blur-xl p-4 rounded-2xl shadow-2xl border border-white/[0.08] mb-8 ml-8">
+          <Panel position="bottom-left" className="bg-white/95 backdrop-blur-md p-4 rounded-xl shadow-xs border border-slate-200 mb-6 ml-6">
             <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2.5">Mastery Tiers</h4>
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2.5">
-                <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
-                <span className="text-xs text-slate-200 font-medium">Proficient (70%+)</span>
+                <div className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+                <span className="text-xs text-slate-700 font-medium">Proficient (70%+)</span>
               </div>
               <div className="flex items-center gap-2.5">
-                <div className="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-[0_0_8px_#fbbf24]" />
-                <span className="text-xs text-slate-200 font-medium">Familiar (40-69%)</span>
+                <div className="w-2.5 h-2.5 rounded-full bg-amber-500" />
+                <span className="text-xs text-slate-700 font-medium">Familiar (40-69%)</span>
               </div>
               <div className="flex items-center gap-2.5">
-                <div className="w-2.5 h-2.5 rounded-full bg-rose-400 shadow-[0_0_8px_#f43f5e]" />
-                <span className="text-xs text-slate-200 font-medium">Prerequisite Gap (&lt;40%)</span>
+                <div className="w-2.5 h-2.5 rounded-full bg-rose-500" />
+                <span className="text-xs text-slate-700 font-medium">Prerequisite Gap (&lt;40%)</span>
               </div>
             </div>
           </Panel>
@@ -224,15 +224,15 @@ export function KnowledgeMap() {
 
       {/* ── Concept Details Drawer (Slide-out) ─────────────────────── */}
       {selectedConcept && (
-        <div className="w-96 bg-[#0A101F]/95 backdrop-blur-2xl border-l border-white/[0.08] shadow-2xl overflow-y-auto flex flex-col absolute right-0 top-0 bottom-0 z-20 transition-all text-white">
-          <div className="p-5 border-b border-white/[0.08] flex justify-between items-start">
+        <div className="w-96 bg-white border-l border-slate-200 shadow-xl overflow-y-auto flex flex-col absolute right-0 top-0 bottom-0 z-20 transition-all text-slate-900">
+          <div className="p-5 border-b border-slate-100 flex justify-between items-start">
             <div>
-              <h2 className="text-xl font-extrabold text-white tracking-tight">{selectedConcept.name}</h2>
-              <span className="text-xs font-semibold text-blue-400 mt-0.5 block">{selectedConcept.topic}</span>
+              <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">{selectedConcept.name}</h2>
+              <span className="text-xs font-semibold text-blue-600 mt-0.5 block">{selectedConcept.topic}</span>
             </div>
             <button 
               onClick={() => setSelectedConcept(null)}
-              className="p-1.5 text-slate-400 hover:text-white hover:bg-white/[0.08] rounded-xl transition-colors cursor-pointer"
+              className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -241,12 +241,12 @@ export function KnowledgeMap() {
           <div className="p-6 flex-1 flex flex-col gap-6">
             <div>
               <div className="flex justify-between items-end mb-2">
-                <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Current Mastery</span>
+                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Current Mastery</span>
                 <span className={cn("text-sm font-extrabold", getMasteryColor(selectedConcept.mastery))}>
                   {Math.round(selectedConcept.mastery)}% - {getMasteryLabel(selectedConcept.mastery)}
                 </span>
               </div>
-              <div className="h-2 bg-white/[0.08] rounded-full overflow-hidden">
+              <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                 <div 
                   className="h-full rounded-full transition-all duration-500"
                   style={{ 
@@ -258,24 +258,24 @@ export function KnowledgeMap() {
             </div>
 
             <div>
-              <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2 mb-2">
-                <BookOpen className="w-3.5 h-3.5 text-blue-400" /> Formal Definition
+              <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2 mb-2">
+                <BookOpen className="w-3.5 h-3.5 text-blue-600" /> Formal Definition
               </h3>
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed bg-white/[0.03] border border-white/[0.06] rounded-xl p-3.5">
+              <p className="text-xs sm:text-sm text-slate-700 leading-relaxed bg-slate-50 border border-slate-100 rounded-xl p-3.5">
                 {selectedConcept.definition}
               </p>
             </div>
 
             {selectedConcept.misconceptions && selectedConcept.misconceptions.length > 0 && (
               <div>
-                <h3 className="text-xs font-bold text-amber-300 uppercase tracking-wider flex items-center gap-2 mb-2.5">
-                  <Lightbulb className="w-3.5 h-3.5 text-amber-400" /> Diagnosed Misconceptions
+                <h3 className="text-xs font-bold text-amber-700 uppercase tracking-wider flex items-center gap-2 mb-2.5">
+                  <Lightbulb className="w-3.5 h-3.5 text-amber-600" /> Diagnosed Misconceptions
                 </h3>
                 <div className="flex flex-col gap-2.5">
                   {selectedConcept.misconceptions.map((misc, idx) => (
-                    <div key={idx} className="bg-amber-950/40 border border-amber-500/30 rounded-xl p-3.5">
-                      <p className="text-xs text-amber-200 font-bold mb-1">⚠️ {misc.description}</p>
-                      <p className="text-xs text-amber-300/80 leading-relaxed font-normal">{misc.correction}</p>
+                    <div key={idx} className="bg-amber-50 border border-amber-200 rounded-xl p-3.5">
+                      <p className="text-xs text-amber-900 font-bold mb-1">⚠️ {misc.description}</p>
+                      <p className="text-xs text-amber-800 leading-relaxed font-normal">{misc.correction}</p>
                     </div>
                   ))}
                 </div>
@@ -283,23 +283,23 @@ export function KnowledgeMap() {
             )}
             
             {selectedConcept.reviewDue && (
-              <div className="flex items-center gap-2 text-xs text-slate-400 bg-white/[0.03] border border-white/[0.06] p-3 rounded-xl">
-                <Clock className="w-4 h-4 text-slate-500" />
+              <div className="flex items-center gap-2 text-xs text-slate-600 bg-slate-50 border border-slate-100 p-3 rounded-xl">
+                <Clock className="w-4 h-4 text-slate-400" />
                 <span>Last reviewed: {formatDate(selectedConcept.lastReviewed!)}</span>
               </div>
             )}
           </div>
 
-          <div className="p-5 border-t border-white/[0.08] flex flex-col gap-2.5 bg-white/[0.02]">
+          <div className="p-5 border-t border-slate-100 flex flex-col gap-2.5 bg-slate-50/50">
             <Link 
               to="/quiz" 
-              className="w-full flex items-center justify-center gap-2 bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.1] text-slate-200 font-semibold py-2.5 rounded-full text-xs transition-all"
+              className="w-full flex items-center justify-center gap-2 bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-semibold py-2.5 rounded-xl text-xs transition-all shadow-2xs"
             >
-              <PlayCircle className="w-4 h-4 text-cyan-400" /> Practice in Quiz Arena
+              <PlayCircle className="w-4 h-4 text-blue-600" /> Practice in Quiz Arena
             </Link>
             <Link 
               to="/tutor" 
-              className="w-full flex items-center justify-center gap-2 bg-[#2563EB] hover:bg-blue-600 text-white font-semibold py-2.5 rounded-full text-xs transition-all shadow-md shadow-blue-500/25"
+              className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-xl text-xs transition-all shadow-xs"
             >
               <MessageCircle className="w-4 h-4" /> Ask Socratic AI Tutor
             </Link>

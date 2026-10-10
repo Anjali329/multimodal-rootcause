@@ -30,26 +30,26 @@ const getVerificationBadge = (verification: ClaimVerification) => {
   switch (verification) {
     case 'supported':
       return (
-        <span className="inline-flex items-center gap-1 text-[10px] font-medium bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full backdrop-blur-md" title="Supported by material">
-          <CheckCircle2 className="w-3 h-3 text-emerald-400" /> Supported
+        <span className="inline-flex items-center gap-1 text-[10px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full" title="Supported by material">
+          <CheckCircle2 className="w-3 h-3 text-emerald-600" /> Supported
         </span>
       );
     case 'partially_supported':
       return (
-        <span className="inline-flex items-center gap-1 text-[10px] font-medium bg-amber-500/15 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-full backdrop-blur-md" title="Partially supported">
-          <AlertTriangle className="w-3 h-3 text-amber-400" /> Partially supported
+        <span className="inline-flex items-center gap-1 text-[10px] font-medium bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded-full" title="Partially supported">
+          <AlertTriangle className="w-3 h-3 text-amber-600" /> Partially supported
         </span>
       );
     case 'outside_material':
       return (
-        <span className="inline-flex items-center gap-1 text-[10px] font-medium bg-white/[0.06] text-slate-300 border border-white/[0.1] px-2 py-0.5 rounded-full backdrop-blur-md" title="Outside material">
-          <Info className="w-3 h-3 text-slate-400" /> Outside material
+        <span className="inline-flex items-center gap-1 text-[10px] font-medium bg-slate-100 text-slate-600 border border-slate-200 px-2 py-0.5 rounded-full" title="Outside material">
+          <Info className="w-3 h-3 text-slate-500" /> Outside material
         </span>
       );
     case 'unverified':
     default:
       return (
-        <span className="inline-flex items-center gap-1 text-[10px] font-medium bg-white/[0.04] text-slate-400 border border-white/[0.08] px-2 py-0.5 rounded-full" title="Unverified">
+        <span className="inline-flex items-center gap-1 text-[10px] font-medium bg-slate-50 text-slate-500 border border-slate-200 px-2 py-0.5 rounded-full" title="Unverified">
           <HelpCircle className="w-3 h-3" /> Unverified
         </span>
       );
@@ -145,33 +145,33 @@ export const Tutor = () => {
     }
 
     return (
-      <div className="flex flex-col h-full bg-[#090E1D] border-l border-white/[0.08]">
-        <div className="px-5 py-4 border-b border-white/[0.08] bg-white/[0.02] flex justify-between items-center shrink-0">
+      <div className="flex flex-col h-full bg-white border-l border-slate-200/80">
+        <div className="px-5 py-4 border-b border-slate-100 bg-white flex justify-between items-center shrink-0">
           <div className="flex items-center gap-3 overflow-hidden">
-            <div className="p-2 bg-blue-500/15 border border-blue-400/20 rounded-xl shrink-0">
-              {getSourceIcon(activeSourceCitation.sourceType, "w-4 h-4 text-cyan-400")}
+            <div className="p-2 bg-blue-50 border border-blue-100 rounded-xl shrink-0">
+              {getSourceIcon(activeSourceCitation.sourceType, "w-4 h-4 text-blue-600")}
             </div>
             <div className="truncate">
-              <h3 className="text-sm font-bold text-white truncate" title={activeSourceCitation.filename}>
+              <h3 className="text-sm font-bold text-slate-900 truncate" title={activeSourceCitation.filename}>
                 {activeSourceCitation.filename}
               </h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500">
                 {activeSourceCitation.location}
               </p>
             </div>
           </div>
           <button 
-            className="p-1.5 text-slate-400 hover:text-white hover:bg-white/[0.08] rounded-lg lg:hidden"
+            className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg lg:hidden"
             onClick={() => setShowMobileSource(false)}
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-6 bg-transparent">
-          <div className="bg-white/[0.03] rounded-2xl shadow-xl border border-white/[0.08] aspect-[3/4] max-h-full flex flex-col w-full max-w-2xl mx-auto overflow-hidden backdrop-blur-md">
-            <div className="px-5 py-3 border-b border-white/[0.08] bg-white/[0.02] flex justify-between text-xs text-slate-400 font-medium">
-              <span className="font-mono text-cyan-300">{activeSourceCitation.sourceType.toUpperCase()} VERIFIED GROUNDING</span>
+        <div className="flex-1 overflow-y-auto p-6 bg-slate-50/50">
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-200/80 aspect-[3/4] max-h-full flex flex-col w-full max-w-2xl mx-auto overflow-hidden">
+            <div className="px-5 py-3 border-b border-slate-100 bg-slate-50/80 flex justify-between text-xs text-slate-500 font-medium">
+              <span className="font-mono text-blue-600 font-semibold">{activeSourceCitation.sourceType.toUpperCase()} VERIFIED GROUNDING</span>
               <span>{
                 activeSourceCitation.pageNumber ? `Page ${activeSourceCitation.pageNumber}` : 
                 activeSourceCitation.slideNumber ? `Slide ${activeSourceCitation.slideNumber}` : 
@@ -180,19 +180,19 @@ export const Tutor = () => {
             </div>
             
             <div className="flex-1 p-8 overflow-y-auto">
-              <div className="w-full h-28 bg-white/[0.02] border border-white/[0.04] rounded-xl mb-6" />
+              <div className="w-full h-28 bg-slate-50 border border-slate-100 rounded-xl mb-6" />
               <div className="space-y-3">
-                <div className="w-3/4 h-3 bg-white/[0.04] rounded" />
-                <div className="w-full h-3 bg-white/[0.04] rounded" />
+                <div className="w-3/4 h-3 bg-slate-100 rounded" />
+                <div className="w-full h-3 bg-slate-100 rounded" />
                 
                 {activeSourceCitation.excerpt && (
-                  <div className="my-6 p-5 bg-cyan-950/40 border-l-4 border-cyan-400 rounded-r-xl text-cyan-100 text-xs sm:text-sm leading-relaxed font-mono shadow-lg">
+                  <div className="my-6 p-5 bg-cyan-50/70 border-l-4 border-cyan-500 rounded-r-xl text-slate-800 text-xs sm:text-sm leading-relaxed font-mono shadow-2xs">
                     {activeSourceCitation.excerpt}
                   </div>
                 )}
                 
-                <div className="w-full h-3 bg-white/[0.04] rounded" />
-                <div className="w-5/6 h-3 bg-white/[0.04] rounded" />
+                <div className="w-full h-3 bg-slate-100 rounded" />
+                <div className="w-5/6 h-3 bg-slate-100 rounded" />
               </div>
             </div>
           </div>
@@ -202,35 +202,35 @@ export const Tutor = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row h-[calc(100vh-6.5rem)] w-full overflow-hidden bg-white/[0.02] border border-white/[0.08] rounded-3xl shadow-2xl backdrop-blur-xl">
+    <div className="flex flex-col lg:flex-row h-[calc(100vh-6.5rem)] w-full overflow-hidden bg-white border border-slate-200/80 rounded-2xl shadow-2xs">
       
       {/* ── Left Panel: Chat ───────────────────────────────────────── */}
-      <div className="flex-1 flex flex-col h-full min-w-0 lg:min-w-[55%] border-r border-white/[0.08]">
+      <div className="flex-1 flex flex-col h-full min-w-0 lg:min-w-[55%] border-r border-slate-200/80">
         
         {/* Chat Header */}
-        <div className="px-6 py-4 border-b border-white/[0.08] flex justify-between items-center shrink-0 bg-white/[0.02]">
+        <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center shrink-0 bg-white">
           <div>
-            <h2 className="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-2">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight flex items-center gap-2">
               <span>{activeCourse?.name || 'Socratic AI Tutor'}</span>
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_#10b981]" />
             </h2>
-            <p className="text-xs text-slate-400">Source-Grounded Socratic Reasoning Coach</p>
+            <p className="text-xs text-slate-500">Source-Grounded Socratic Reasoning Coach</p>
           </div>
-          <button className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-200 bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.1] rounded-full transition-all cursor-pointer">
+          <button className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-full transition-all cursor-pointer">
             <Plus className="w-3.5 h-3.5" />
             <span>New Session</span>
           </button>
         </div>
 
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-transparent">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-[#F8FAFC]">
           {messages.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center max-w-lg mx-auto w-full text-center">
-              <div className="w-14 h-14 bg-gradient-to-tr from-blue-600 via-indigo-500 to-purple-500 text-white rounded-2xl flex items-center justify-center mb-5 shadow-lg shadow-purple-500/20">
+              <div className="w-14 h-14 bg-blue-600 text-white rounded-2xl flex items-center justify-center mb-5 shadow-sm">
                 <MessageSquare className="w-7 h-7" />
               </div>
-              <h3 className="text-xl font-extrabold text-white mb-2">How can I guide your learning?</h3>
-              <p className="text-slate-400 text-sm mb-6 leading-relaxed">
+              <h3 className="text-xl font-extrabold text-slate-900 mb-2">How can I guide your learning?</h3>
+              <p className="text-slate-500 text-sm mb-6 leading-relaxed">
                 Ask a conceptual question, request a step-by-step hint, or explore prerequisite gaps.
               </p>
               
@@ -239,7 +239,7 @@ export const Tutor = () => {
                   <button 
                     key={idx}
                     onClick={() => { setInputValue(prompt); textareaRef.current?.focus(); }}
-                    className="w-full text-left p-3.5 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:border-blue-400/40 hover:bg-white/[0.06] text-slate-200 text-xs sm:text-sm transition-all cursor-pointer"
+                    className="w-full text-left p-3.5 rounded-xl border border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 text-slate-800 text-xs sm:text-sm transition-all cursor-pointer shadow-2xs"
                   >
                     {prompt}
                   </button>
@@ -258,10 +258,10 @@ export const Tutor = () => {
                 >
                   <div 
                     className={cn(
-                      "px-5 py-3.5 text-sm sm:text-base leading-relaxed shadow-lg",
+                      "px-5 py-3.5 text-sm sm:text-base leading-relaxed shadow-2xs",
                       msg.role === 'user' 
-                        ? "bg-[#2563EB] text-white rounded-2xl rounded-br-sm shadow-blue-600/30 font-medium" 
-                        : "bg-white/[0.04] border border-white/[0.08] text-slate-100 rounded-2xl rounded-bl-sm backdrop-blur-md"
+                        ? "bg-blue-600 text-white rounded-2xl rounded-br-sm font-medium" 
+                        : "bg-white border border-slate-200/80 text-slate-800 rounded-2xl rounded-bl-sm"
                     )}
                   >
                     {msg.content.split('\n\n').map((paragraph, i) => (
@@ -292,16 +292,16 @@ export const Tutor = () => {
         </div>
 
         {/* Input Area */}
-        <div className="p-4 bg-white/[0.02] border-t border-white/[0.08] shrink-0">
+        <div className="p-4 bg-white border-t border-slate-100 shrink-0">
           <div className="max-w-3xl mx-auto w-full">
-            <div className="relative flex items-end gap-2 bg-white/[0.04] border border-white/[0.12] focus-within:border-blue-400 focus-within:ring-1 focus-within:ring-blue-400 rounded-2xl transition-all p-2 backdrop-blur-md">
+            <div className="relative flex items-end gap-2 bg-slate-50 border border-slate-200 focus-within:border-blue-500 focus-within:bg-white rounded-2xl transition-all p-2">
               <textarea
                 ref={textareaRef}
                 value={inputValue}
                 onChange={e => setInputValue(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="Ask a question or explain your reasoning step..."
-                className="w-full max-h-32 min-h-[44px] bg-transparent resize-none outline-none text-white placeholder-slate-500 py-2.5 px-3 text-sm"
+                className="w-full max-h-32 min-h-[44px] bg-transparent resize-none outline-none text-slate-900 placeholder-slate-400 py-2.5 px-3 text-sm"
                 rows={inputValue.split('\n').length > 1 ? Math.min(inputValue.split('\n').length, 4) : 1}
               />
               <button 
@@ -310,8 +310,8 @@ export const Tutor = () => {
                 className={cn(
                   "p-2.5 rounded-xl shrink-0 mb-0.5 transition-all cursor-pointer",
                   inputValue.trim() && !isSending
-                    ? "bg-[#2563EB] text-white hover:bg-blue-600 shadow-md shadow-blue-500/25"
-                    : "bg-white/[0.05] text-slate-500 cursor-not-allowed"
+                    ? "bg-blue-600 text-white hover:bg-blue-700 shadow-xs"
+                    : "bg-slate-200 text-slate-400 cursor-not-allowed"
                 )}
               >
                 <SendHorizontal className="w-5 h-5" />
@@ -321,19 +321,19 @@ export const Tutor = () => {
             <div className="flex gap-2 mt-3 overflow-x-auto pb-1 hide-scrollbar">
               <button 
                 onClick={() => setInputValue("Can you give me a Socratic hint without spoiling the answer?")}
-                className="shrink-0 text-xs font-medium px-3.5 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 border border-white/[0.08] transition-colors cursor-pointer"
+                className="shrink-0 text-xs font-medium px-3.5 py-1.5 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 transition-colors cursor-pointer shadow-2xs"
               >
                 💡 Give Socratic hint
               </button>
               <button 
                 onClick={() => setInputValue("Show me the underlying prerequisite concept for this")}
-                className="shrink-0 text-xs font-medium px-3.5 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 border border-white/[0.08] transition-colors cursor-pointer"
+                className="shrink-0 text-xs font-medium px-3.5 py-1.5 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 transition-colors cursor-pointer shadow-2xs"
               >
                 🎯 Prerequisite trace
               </button>
               <button 
                 onClick={() => setInputValue("Where was this mentioned in the lecture video?")}
-                className="shrink-0 text-xs font-medium px-3.5 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 border border-white/[0.08] transition-colors cursor-pointer"
+                className="shrink-0 text-xs font-medium px-3.5 py-1.5 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 transition-colors cursor-pointer shadow-2xs"
               >
                 🎥 Video citation
               </button>
@@ -349,7 +349,7 @@ export const Tutor = () => {
 
       {/* Mobile Source Viewer Sheet */}
       <div className={cn(
-        "fixed inset-0 z-50 bg-[#080D1A] transition-transform duration-300 lg:hidden flex flex-col",
+        "fixed inset-0 z-50 bg-white transition-transform duration-300 lg:hidden flex flex-col",
         showMobileSource ? "translate-y-0" : "translate-y-full"
       )}>
         <SourceViewer />

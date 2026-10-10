@@ -1,380 +1,585 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  ArrowRight, 
-  BookOpen, 
-  Flame, 
-  Target, 
-  CheckCircle2, 
-  Clock,
-  MessageSquare,
-  Network,
-  Trophy,
-  FlaskConical,
-  Video,
+import {
+  Image as ImageIcon,
+  Mic,
+  ChevronLeft,
   ChevronRight,
-  TrendingUp
+  BookOpen,
+  FileText,
+  Brain,
+  Baby,
+  Video,
+  ArrowUpRight,
+  Flame,
+  Trophy,
 } from 'lucide-react';
 
 export function OverviewPage() {
   const navigate = useNavigate();
+  const [prompt, setPrompt] = useState('');
 
-  const featuresList = [
-    {
-      id: 'feat-rewind',
-      title: 'Root-Cause Rewind',
-      badge: 'Core Diagnosis',
-      badgeColor: 'text-rose-400 border-rose-500/30 bg-rose-500/10',
-      description: 'Traces failure patterns backward through prerequisite knowledge DAG to isolate foundational gaps.',
-      icon: Target,
-      iconColor: 'text-rose-400',
-      iconBg: 'bg-rose-500/15 border-rose-500/20',
-      path: '/report/report-001',
-      cta: 'Inspect Diagnosis'
-    },
-    {
-      id: 'feat-tutor',
-      title: 'Socratic AI Tutor',
-      badge: 'Zero Hallucinations',
-      badgeColor: 'text-cyan-400 border-cyan-500/30 bg-cyan-500/10',
-      description: 'Interactive Socratic coach providing targeted hints and diagram proofs grounded in your course materials.',
-      icon: MessageSquare,
-      iconColor: 'text-cyan-400',
-      iconBg: 'bg-cyan-500/15 border-cyan-500/20',
-      path: '/tutor',
-      cta: 'Launch Tutor'
-    },
-    {
-      id: 'feat-map',
-      title: 'Topological Knowledge Map',
-      badge: 'Visual DAG',
-      badgeColor: 'text-purple-400 border-purple-500/30 bg-purple-500/10',
-      description: 'Interactive concept graph displaying live mastery levels, dependency bottlenecks, and remedial learning paths.',
-      icon: Network,
-      iconColor: 'text-purple-400',
-      iconBg: 'bg-purple-500/15 border-purple-500/20',
-      path: '/map',
-      cta: 'Explore Map'
-    },
-    {
-      id: 'feat-library',
-      title: 'Multimodal Source Grounding',
-      badge: 'OCR & Video Citations',
-      badgeColor: 'text-blue-400 border-blue-500/30 bg-blue-500/10',
-      description: 'Course lecture PDFs, slides, and timestamped video recordings auto-indexed into granular conceptual units.',
-      icon: Video,
-      iconColor: 'text-blue-400',
-      iconBg: 'bg-blue-500/15 border-blue-500/20',
-      path: '/library',
-      cta: 'Open Library'
-    },
-    {
-      id: 'feat-quiz',
-      title: 'Adaptive Quiz Arena',
-      badge: 'Confidence-Weighted',
-      badgeColor: 'text-amber-400 border-amber-500/30 bg-amber-500/10',
-      description: 'Calibrated diagnostic assessments with Sure/Maybe/Guess signaling to distinguish true gaps from test fatigue.',
-      icon: Trophy,
-      iconColor: 'text-amber-400',
-      iconBg: 'bg-amber-500/15 border-amber-500/20',
-      path: '/quiz',
-      cta: 'Start Practice'
-    },
-    {
-      id: 'feat-eval',
-      title: 'Evaluation & Faithfulness Lab',
-      badge: '92.4% Precision',
-      badgeColor: 'text-fuchsia-400 border-fuchsia-500/30 bg-fuchsia-500/10',
-      description: 'Benchmark suite evaluating retrieval faithfulness, citation precision, context recall, and comparative ablations.',
-      icon: FlaskConical,
-      iconColor: 'text-fuchsia-400',
-      iconBg: 'bg-fuchsia-500/15 border-fuchsia-500/20',
-      path: '/eval-lab',
-      cta: 'View Benchmarks'
-    },
+  const quickPills = [
+    { label: 'Explain this concept', icon: BookOpen, color: 'text-blue-600' },
+    { label: 'Summarize this', icon: FileText, color: 'text-amber-600' },
+    { label: 'Test my knowledge', icon: Brain, color: 'text-rose-500' },
+    { label: "Explain like I'm 5", icon: Baby, color: 'text-yellow-600' },
+    { label: 'Visual demonstration', icon: Video, color: 'text-purple-600' },
   ];
 
-  const recentActivities = [
-    {
-      id: 'act-1',
-      title: 'Completed: Binary Trees',
-      subject: 'Data Structures & Algorithms',
-      time: '2h ago',
-      iconColor: 'text-blue-400',
-      iconBg: 'bg-blue-500/15',
-    },
-    {
-      id: 'act-2',
-      title: 'Attempted: SQL Joins Quiz',
-      subject: 'Database Systems',
-      time: '4h ago',
-      iconColor: 'text-emerald-400',
-      iconBg: 'bg-emerald-500/15',
-    },
-    {
-      id: 'act-3',
-      title: 'Viewed: System Design Notes',
-      subject: 'System Design',
-      time: '6h ago',
-      iconColor: 'text-purple-400',
-      iconBg: 'bg-purple-500/15',
-    },
-    {
-      id: 'act-4',
-      title: 'Traced: Chain Rule Gap',
-      subject: 'Calculus I (Function Comp)',
-      time: '1d ago',
-      iconColor: 'text-rose-400',
-      iconBg: 'bg-rose-500/15',
-    },
+  const handleAskSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (prompt.trim()) {
+      navigate(`/tutor?q=${encodeURIComponent(prompt)}`);
+    } else {
+      navigate('/tutor');
+    }
+  };
+
+  const handlePillClick = (text: string) => {
+    setPrompt(text);
+    navigate(`/tutor?q=${encodeURIComponent(text)}`);
+  };
+
+  // Activity heatmap grid pattern (7 rows x 16 columns)
+  // Higher numbers correspond to deeper blue intensities (0 to 4)
+  const heatmapData: number[][] = [
+    [0, 1, 0, 0, 0, 2, 0, 0, 0, 0, 1, 2, 0, 3, 4, 3],
+    [1, 0, 0, 0, 0, 4, 2, 0, 0, 0, 3, 0, 0, 4, 4, 4],
+    [0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 4, 0, 2, 3, 4, 4],
+    [0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 3, 4, 4],
+    [0, 0, 2, 0, 0, 0, 0, 2, 3, 0, 4, 3, 4, 4, 4, 4],
+    [0, 3, 4, 0, 0, 0, 0, 0, 4, 0, 4, 4, 4, 4, 4, 4],
+    [0, 4, 4, 0, 0, 0, 0, 0, 4, 0, 4, 4, 4, 4, 4, 4],
   ];
+
+  const getHeatmapColor = (level: number) => {
+    switch (level) {
+      case 1:
+        return 'bg-blue-100';
+      case 2:
+        return 'bg-blue-300';
+      case 3:
+        return 'bg-blue-500';
+      case 4:
+        return 'bg-blue-600';
+      default:
+        return 'bg-slate-100';
+    }
+  };
 
   return (
-    <div className="space-y-6">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-7 items-start">
       
-      {/* ── Main Two-Column Layout: Features Left, Dashboard Right ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
-        
-        {/* ═════════════════════════════════════════════════════════════ */}
-        {/* ── LEFT SIDE: Core Platform Features Arranged Vertically ── */}
-        {/* ═════════════════════════════════════════════════════════════ */}
-        <div className="lg:col-span-5 space-y-4">
-          
-          <div className="flex items-center justify-between pb-1">
-            <div>
-              <span className="text-[11px] font-bold text-cyan-400 tracking-widest uppercase">
-                Platform Capabilities
-              </span>
-              <h2 className="text-xl font-extrabold text-white tracking-tight mt-0.5">
-                Adaptive Features
-              </h2>
+      {/* ═════════════════════════════════════════════════════════════ */}
+      {/* ── LEFT & CENTER MAIN CANVAS: Clean Simple Interactive Hub ── */}
+      {/* ═════════════════════════════════════════════════════════════ */}
+      <div className="lg:col-span-8 space-y-6 sm:space-y-7 min-w-0">
+
+        {/* ── Greeting Header ─────────────────────────────────────── */}
+        <div>
+          <h1 className="text-2xl sm:text-[28px] font-extrabold text-slate-900 tracking-tight">
+            Good Morning, Hana
+          </h1>
+        </div>
+
+        {/* ── Visual Ask Anything Input Box ────────────────────────── */}
+        <div className="bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-5 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-3.5">
+          <form onSubmit={handleAskSubmit} className="relative">
+            <input
+              type="text"
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              placeholder="Ask anything"
+              className="w-full text-base sm:text-lg text-slate-800 placeholder-slate-400 bg-transparent border-0 outline-none pr-16 pl-1 font-normal"
+            />
+            
+            {/* Input icons inside box */}
+            <div className="flex items-center justify-between pt-4 border-t border-slate-100 mt-3">
+              <button
+                type="button"
+                onClick={() => navigate('/library')}
+                title="Attach source file or diagram"
+                className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-lg transition-colors cursor-pointer"
+              >
+                <ImageIcon className="w-5 h-5" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => navigate('/tutor')}
+                title="Voice input"
+                className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-lg transition-colors cursor-pointer"
+              >
+                <Mic className="w-5 h-5" />
+              </button>
             </div>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-white/[0.05] border border-white/[0.1] text-slate-300">
-              6 Modules Active
-            </span>
-          </div>
+          </form>
 
-          {/* Vertical Feature Cards Stack */}
-          <div className="space-y-3.5">
-            {featuresList.map((feat) => {
-              const Icon = feat.icon;
+          {/* Quick Action Pills matching reference screenshot */}
+          <div className="flex flex-wrap gap-2 pt-1">
+            {quickPills.map((pill, i) => {
+              const Icon = pill.icon;
               return (
-                <div
-                  key={feat.id}
-                  onClick={() => navigate(feat.path)}
-                  className="bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] hover:border-blue-400/40 rounded-2xl p-4 sm:p-4.5 transition-all duration-200 cursor-pointer group shadow-xl backdrop-blur-md flex items-start gap-4"
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => handlePillClick(pill.label)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-200 hover:border-slate-300 hover:bg-slate-50/80 text-[12.5px] font-medium text-slate-700 transition-all cursor-pointer shadow-2xs"
                 >
-                  {/* Glowing Icon */}
-                  <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 border group-hover:scale-105 transition-transform ${feat.iconBg} ${feat.iconColor}`}>
-                    <Icon className="w-5 h-5" />
-                  </div>
-
-                  {/* Feature Content */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between gap-2 mb-1">
-                      <h3 className="font-bold text-sm text-white truncate group-hover:text-blue-300 transition-colors">
-                        {feat.title}
-                      </h3>
-                      <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border shrink-0 ${feat.badgeColor}`}>
-                        {feat.badge}
-                      </span>
-                    </div>
-
-                    <p className="text-xs text-slate-400 leading-relaxed line-clamp-2">
-                      {feat.description}
-                    </p>
-
-                    <div className="mt-2.5 flex items-center gap-1 text-[11px] font-semibold text-blue-300 group-hover:text-white transition-colors">
-                      <span>{feat.cta}</span>
-                      <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                    </div>
-                  </div>
-                </div>
+                  <Icon className={`w-3.5 h-3.5 ${pill.color}`} />
+                  <span>{pill.label}</span>
+                </button>
               );
             })}
           </div>
-
         </div>
 
-        {/* ═════════════════════════════════════════════════════════════ */}
-        {/* ── RIGHT SIDE: Operational Learning Dashboard ───────────── */}
-        {/* ═════════════════════════════════════════════════════════════ */}
-        <div className="lg:col-span-7 space-y-6 min-w-0">
-          
-          <div className="flex items-center justify-between pb-1">
-            <div>
-              <span className="text-[11px] font-bold text-blue-400 tracking-widest uppercase">
-                Student Command Center
-              </span>
-              <h2 className="text-xl font-extrabold text-white tracking-tight mt-0.5">
-                Learning Dashboard
-              </h2>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
-              <span className="text-xs font-semibold text-slate-300">Active Session</span>
-            </div>
-          </div>
-
-          {/* 1. Top Hero Card: Root-Cause Diagnostic Gap */}
-          <div className="bg-gradient-to-br from-[#111C33] via-[#0E172A] to-[#0A101E] rounded-3xl p-6 sm:p-7 border border-blue-400/25 shadow-2xl relative overflow-hidden min-w-0">
-            <div className="absolute top-0 right-0 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
-            
-            <div className="space-y-3.5 relative z-10">
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-rose-500/15 text-rose-300 border border-rose-500/30 backdrop-blur-md">
-                <span className="w-2 h-2 rounded-full bg-rose-400 animate-pulse shadow-[0_0_8px_#f43f5e]" />
-                <span>Root-Cause Diagnostic Gap</span>
-              </div>
-
-              {/* Title with Iridescent Gradient */}
-              <h2 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight leading-snug">
-                Underlying Gap:{' '}
-                <span className="bg-gradient-to-r from-[#D946EF] via-[#C084FC] to-[#38BDF8] bg-clip-text text-transparent">
-                  Function Composition
-                </span>
-              </h2>
-
-              {/* Explanation */}
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
-                You repeatedly made errors calculating derivatives via the Chain Rule (<code className="font-mono text-xs bg-blue-950/70 text-cyan-300 px-1.5 py-0.5 rounded border border-blue-400/30">[f(g(x))]&apos;</code>). Topological prerequisite analysis found your root roadblock is decomposing nested functions.
-              </p>
-
-              {/* Action CTAs */}
-              <div className="pt-2 flex flex-wrap items-center gap-2.5">
-                <button
-                  onClick={() => navigate('/tutor')}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#2563EB] hover:bg-blue-600 text-white font-semibold text-xs shadow-lg shadow-blue-500/25 transition-all duration-150 cursor-pointer hover:scale-[1.02]"
-                >
-                  <span>Launch Socratic AI Tutor</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-                <button
-                  onClick={() => navigate('/map')}
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/[0.06] hover:bg-white/[0.12] text-slate-200 border border-white/[0.12] font-medium text-xs backdrop-blur-md transition-all duration-150 cursor-pointer"
-                >
-                  <span>Inspect DAG Graph</span>
-                </button>
-                <button
-                  onClick={() => navigate('/report/report-001')}
-                  className="inline-flex items-center gap-2 px-3 py-2 text-xs font-semibold text-blue-300 hover:text-white transition-colors cursor-pointer"
-                >
-                  <span>View Report</span>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* 2. Four Metric Stat Cards (2x2 Grid) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            
-            {/* Metric 1: Accuracy */}
-            <div className="bg-white/[0.03] hover:bg-white/[0.06] hover:border-blue-400/40 rounded-2xl p-5 border border-white/[0.08] shadow-xl transition-all duration-200 backdrop-blur-md flex flex-col justify-between min-w-0 group">
-              <div className="flex items-center justify-between mb-2">
-                <div className="w-9 h-9 rounded-xl bg-blue-500/15 text-blue-400 border border-blue-400/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                  <Target className="w-4.5 h-4.5" />
-                </div>
-                <span className="text-[11px] text-emerald-400 font-bold bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 rounded-full flex items-center gap-1">
-                  <TrendingUp className="w-3 h-3" /> +12%
-                </span>
-              </div>
-              <div>
-                <p className="text-xs font-medium text-slate-400">Overall Accuracy</p>
-                <p className="text-2xl sm:text-3xl font-extrabold text-white mt-1 tracking-tight">78%</p>
-                <p className="text-[11px] text-slate-400 mt-0.5">Based on 45 answered questions</p>
-              </div>
-            </div>
-
-            {/* Metric 2: Topics Mastered */}
-            <div className="bg-white/[0.03] hover:bg-white/[0.06] hover:border-emerald-400/40 rounded-2xl p-5 border border-white/[0.08] shadow-xl transition-all duration-200 backdrop-blur-md flex flex-col justify-between min-w-0 group">
-              <div className="flex items-center justify-between mb-2">
-                <div className="w-9 h-9 rounded-xl bg-emerald-500/15 text-emerald-400 border border-emerald-400/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                  <CheckCircle2 className="w-4.5 h-4.5" />
-                </div>
-                <span className="text-[11px] text-blue-300 font-bold bg-blue-500/15 border border-blue-500/30 px-2 py-0.5 rounded-full">
-                  50%
-                </span>
-              </div>
-              <div>
-                <p className="text-xs font-medium text-slate-400">Topics Mastered</p>
-                <p className="text-2xl sm:text-3xl font-extrabold text-white mt-1 tracking-tight">12 / 24</p>
-                <p className="text-[11px] text-slate-400 mt-0.5">Calculus & Database modules</p>
-              </div>
-            </div>
-
-            {/* Metric 3: Current Streak */}
-            <div className="bg-white/[0.03] hover:bg-white/[0.06] hover:border-orange-400/40 rounded-2xl p-5 border border-white/[0.08] shadow-xl transition-all duration-200 backdrop-blur-md flex flex-col justify-between min-w-0 group">
-              <div className="flex items-center justify-between mb-2">
-                <div className="w-9 h-9 rounded-xl bg-orange-500/15 text-orange-400 border border-orange-400/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                  <Flame className="w-4.5 h-4.5 fill-orange-400" />
-                </div>
-                <span className="text-[11px] text-orange-400 font-bold bg-orange-500/15 border border-orange-500/30 px-2 py-0.5 rounded-full">
-                  Best Streak
-                </span>
-              </div>
-              <div>
-                <p className="text-xs font-medium text-slate-400">Current Streak</p>
-                <p className="text-2xl sm:text-3xl font-extrabold text-white mt-1 tracking-tight">5 Days</p>
-                <p className="text-[11px] text-slate-400 mt-0.5">Consecutive daily problem solving</p>
-              </div>
-            </div>
-
-            {/* Metric 4: Source Materials */}
-            <div className="bg-white/[0.03] hover:bg-white/[0.06] hover:border-purple-400/40 rounded-2xl p-5 border border-white/[0.08] shadow-xl transition-all duration-200 backdrop-blur-md flex flex-col justify-between min-w-0 group">
-              <div className="flex items-center justify-between mb-2">
-                <div className="w-9 h-9 rounded-xl bg-purple-500/15 text-purple-400 border border-purple-400/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                  <BookOpen className="w-4.5 h-4.5" />
-                </div>
-                <span className="text-[11px] text-purple-300 font-bold bg-purple-500/15 border border-purple-500/30 px-2 py-0.5 rounded-full">
-                  Indexed
-                </span>
-              </div>
-              <div>
-                <p className="text-xs font-medium text-slate-400">Source Materials</p>
-                <p className="text-2xl sm:text-3xl font-extrabold text-white mt-1 tracking-tight">4 Sources</p>
-                <p className="text-[11px] text-slate-400 mt-0.5">PDF syllabi & lecture videos</p>
-              </div>
-            </div>
-
-          </div>
-
-          {/* 3. Recent Activity Stream */}
-          <div className="bg-white/[0.03] rounded-3xl p-5 sm:p-6 border border-white/[0.08] shadow-xl backdrop-blur-md">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <Clock className="w-4 h-4 text-blue-400" />
-                <span>Recent Learning Stream</span>
-              </h3>
-              <button
-                onClick={() => navigate('/report/report-001')}
-                className="text-xs font-semibold text-blue-300 hover:text-white hover:underline flex items-center gap-1 cursor-pointer transition-colors"
-              >
-                <span>View Full History</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+        {/* ── Continue Learning Section ───────────────────────────── */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
+              Continue Learning
+            </h2>
+            <div className="flex items-center gap-1 text-slate-400">
+              <button className="p-1 rounded-full hover:bg-slate-100 hover:text-slate-700 transition-colors">
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button className="p-1 rounded-full hover:bg-slate-100 hover:text-slate-700 transition-colors">
+                <ChevronRight className="w-4 h-4" />
               </button>
             </div>
+          </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {recentActivities.map((act) => (
-                <div
-                  key={act.id}
-                  className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.06] hover:border-blue-400/30 hover:bg-white/[0.06] flex items-center gap-3 min-w-0 transition-all"
-                >
-                  <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${act.iconBg} ${act.iconColor}`}>
-                    <CheckCircle2 className="w-4 h-4" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-xs font-bold text-white truncate">
-                      {act.title}
-                    </p>
-                    <p className="text-[10px] text-slate-400 truncate mt-0.5">
-                      {act.subject} • {act.time}
-                    </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            
+            {/* Card 1: Electricity & Magnetism (Peach/Rose Pastel Banner) */}
+            <div
+              onClick={() => navigate('/report/report-001')}
+              className="bg-white rounded-2xl border border-slate-200/80 p-3 hover:border-slate-300 transition-all cursor-pointer shadow-[0_2px_10px_rgba(0,0,0,0.02)] group flex flex-col justify-between"
+            >
+              <div>
+                {/* Visual Header Banner */}
+                <div className="h-32 rounded-xl bg-[#FEECEC] flex items-center justify-center relative overflow-hidden">
+                  <span className="absolute top-2.5 left-2.5 bg-white/95 backdrop-blur-xs text-[10.5px] font-semibold text-slate-700 px-2.5 py-0.5 rounded-full shadow-2xs">
+                    Due Tomorrow, 9:00
+                  </span>
+                  
+                  {/* Magnet Illustration 🧲 */}
+                  <div className="text-5xl group-hover:scale-110 transition-transform duration-200">
+                    🧲
                   </div>
                 </div>
-              ))}
+
+                {/* Content */}
+                <div className="mt-3 px-1">
+                  <h3 className="font-bold text-[13.5px] text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">
+                    Electricity & Magnetism
+                  </h3>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Physics 12A
+                  </p>
+                </div>
+              </div>
+
+              {/* Progress Bar & Stats */}
+              <div className="mt-3 px-1 pt-1">
+                <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                  <div className="h-full bg-blue-600 rounded-full" style={{ width: '86%' }} />
+                </div>
+                <div className="mt-2 text-[11px] text-slate-500 font-medium">
+                  86% complete • 30 min
+                </div>
+              </div>
+            </div>
+
+            {/* Card 2: Forces & Motion Essentials (Mint/Cyan Pastel Banner) */}
+            <div
+              onClick={() => navigate('/tutor')}
+              className="bg-white rounded-2xl border border-slate-200/80 p-3 hover:border-slate-300 transition-all cursor-pointer shadow-[0_2px_10px_rgba(0,0,0,0.02)] group flex flex-col justify-between"
+            >
+              <div>
+                {/* Visual Header Banner */}
+                <div className="h-32 rounded-xl bg-[#E8F7F8] flex items-center justify-center relative overflow-hidden">
+                  <span className="absolute top-2.5 left-2.5 bg-white/95 backdrop-blur-xs text-[10.5px] font-semibold text-slate-700 px-2.5 py-0.5 rounded-full shadow-2xs">
+                    Due 12 June
+                  </span>
+
+                  {/* Stacked Avatars */}
+                  <div className="absolute top-2.5 right-2.5 flex items-center">
+                    <div className="w-5 h-5 rounded-full bg-purple-600 text-white font-bold text-[9px] flex items-center justify-center shadow-xs border border-white">
+                      E
+                    </div>
+                    <div className="w-5 h-5 rounded-full bg-amber-500 text-white font-bold text-[9px] flex items-center justify-center shadow-xs border border-white -ml-1.5">
+                      A
+                    </div>
+                  </div>
+
+                  {/* Triangle Ruler Illustration 📐 */}
+                  <div className="text-5xl group-hover:scale-110 transition-transform duration-200">
+                    📐
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="mt-3 px-1">
+                  <h3 className="font-bold text-[13.5px] text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">
+                    Forces & Motion Essentials
+                  </h3>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Physics 12A
+                  </p>
+                </div>
+              </div>
+
+              {/* Progress Bar & Stats */}
+              <div className="mt-3 px-1 pt-1">
+                <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                  <div className="h-full bg-blue-600 rounded-full" style={{ width: '57%' }} />
+                </div>
+                <div className="mt-2 text-[11px] text-slate-500 font-medium">
+                  57% complete • 45 min
+                </div>
+              </div>
+            </div>
+
+            {/* Card 3: ResNets & Gradient Flow (Lavender/Purple Pastel Banner) */}
+            <div
+              onClick={() => navigate('/map')}
+              className="bg-white rounded-2xl border border-slate-200/80 p-3 hover:border-slate-300 transition-all cursor-pointer shadow-[0_2px_10px_rgba(0,0,0,0.02)] group flex flex-col justify-between"
+            >
+              <div>
+                {/* Visual Header Banner */}
+                <div className="h-32 rounded-xl bg-[#F0EEFF] flex items-center justify-center relative overflow-hidden">
+                  {/* DNA / Double Helix Illustration 🧬 */}
+                  <div className="text-5xl group-hover:scale-110 transition-transform duration-200">
+                    🧬
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="mt-3 px-1">
+                  <h3 className="font-bold text-[13.5px] text-slate-900 group-hover:text-purple-600 transition-colors line-clamp-1">
+                    Forces & Motion Essentials
+                  </h3>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Mindjoy Physics
+                  </p>
+                </div>
+              </div>
+
+              {/* Progress Bar & Stats */}
+              <div className="mt-3 px-1 pt-1">
+                <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                  <div className="h-full bg-blue-600 rounded-full" style={{ width: '42%' }} />
+                </div>
+                <div className="mt-2 text-[11px] text-slate-500 font-medium">
+                  42% complete • 2 hrs
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* ── Tutors Section ───────────────────────────────────────── */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
+              Tutors
+            </h2>
+            <div className="flex items-center gap-1 text-slate-400">
+              <button className="p-1 rounded-full hover:bg-slate-100 hover:text-slate-700 transition-colors">
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button className="p-1 rounded-full hover:bg-slate-100 hover:text-slate-700 transition-colors">
+                <ChevronRight className="w-4 h-4" />
+              </button>
             </div>
           </div>
 
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            
+            {/* Tutor Card 1: Coding Tutor */}
+            <div
+              onClick={() => navigate('/tutor?role=coding')}
+              className="bg-white rounded-2xl border border-slate-200/80 p-4 hover:border-slate-300 transition-all cursor-pointer shadow-[0_2px_10px_rgba(0,0,0,0.02)] flex gap-3.5 items-start group"
+            >
+              {/* Illustrated Character Avatar */}
+              <div className="w-16 h-16 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 overflow-hidden shadow-xs relative">
+                <div className="absolute inset-0 bg-gradient-to-tr from-indigo-900 via-slate-800 to-cyan-900 opacity-90" />
+                <span className="relative z-10 text-2xl">💻</span>
+              </div>
+
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between gap-1">
+                  <h3 className="font-bold text-[14px] text-slate-900 group-hover:text-blue-600 transition-colors truncate">
+                    Coding Tutor
+                  </h3>
+                </div>
+
+                <div className="flex items-center gap-1.5 text-[11px] text-slate-500 mt-0.5">
+                  <span className="font-semibold text-blue-600 flex items-center">
+                    <ArrowUpRight className="w-3 h-3" /> CS500
+                  </span>
+                  <span>•</span>
+                  <span>4 weeks ago</span>
+                </div>
+
+                <p className="text-xs text-slate-500 mt-1.5 line-clamp-2 leading-relaxed">
+                  Learn coding step-by-step with a patient guide focused on clear logic...
+                </p>
+              </div>
+            </div>
+
+            {/* Tutor Card 2: Physics Mentor */}
+            <div
+              onClick={() => navigate('/tutor?role=physics')}
+              className="bg-white rounded-2xl border border-slate-200/80 p-4 hover:border-slate-300 transition-all cursor-pointer shadow-[0_2px_10px_rgba(0,0,0,0.02)] flex gap-3.5 items-start group"
+            >
+              {/* Illustrated Character Avatar */}
+              <div className="w-16 h-16 rounded-xl bg-amber-950 text-white flex items-center justify-center shrink-0 overflow-hidden shadow-xs relative">
+                <div className="absolute inset-0 bg-gradient-to-tr from-amber-900 via-slate-800 to-indigo-900 opacity-90" />
+                <span className="relative z-10 text-2xl">🧑‍🏫</span>
+              </div>
+
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between gap-1">
+                  <h3 className="font-bold text-[14px] text-slate-900 group-hover:text-blue-600 transition-colors truncate">
+                    Physics Mentor
+                  </h3>
+                </div>
+
+                <div className="flex items-center gap-1.5 text-[11px] text-slate-500 mt-0.5">
+                  <span className="font-semibold text-blue-600 flex items-center">
+                    <ArrowUpRight className="w-3 h-3" /> Physics 101
+                  </span>
+                  <span>•</span>
+                  <span>2 weeks ago</span>
+                </div>
+
+                <p className="text-xs text-slate-500 mt-1.5 line-clamp-2 leading-relaxed">
+                  Make physics clear! Learn how equations connect to your everyday intuition...
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* ── Learning Progress Section ───────────────────────────── */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
+              Learning Progress
+            </h2>
+            <div className="flex items-center gap-1 text-slate-400">
+              <button className="p-1 rounded-full hover:bg-slate-100 hover:text-slate-700 transition-colors">
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button className="p-1 rounded-full hover:bg-slate-100 hover:text-slate-700 transition-colors">
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            
+            {/* Leaderboard Card */}
+            <div
+              onClick={() => navigate('/quiz')}
+              className="bg-white rounded-2xl border border-slate-200/80 p-4 hover:border-slate-300 transition-all cursor-pointer shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-bold text-[14px] text-slate-900">
+                    Leaderboard
+                  </h3>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Time spent learning this week
+                  </p>
+                </div>
+                <Trophy className="w-5 h-5 text-amber-500" />
+              </div>
+
+              <div className="mt-4 flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+                <span className="font-semibold text-slate-700">Rank #2 in cohort</span>
+                <span className="font-bold text-blue-600">14.5 hrs</span>
+              </div>
+            </div>
+
+            {/* Learning Streak Card */}
+            <div
+              onClick={() => navigate('/plan')}
+              className="bg-white rounded-2xl border border-slate-200/80 p-4 hover:border-slate-300 transition-all cursor-pointer shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-bold text-[14px] text-slate-900">
+                    Learning Streak
+                  </h3>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    174 study sessions in the last year
+                  </p>
+                </div>
+                <Flame className="w-5 h-5 text-orange-500" />
+              </div>
+
+              <div className="mt-4 flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+                <span className="font-semibold text-slate-700">Active Streak</span>
+                <span className="font-bold text-orange-600">14 Days 🔥</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      {/* ═════════════════════════════════════════════════════════════ */}
+      {/* ── RIGHT PROFILE & VISUALIZATIONS PANEL ─────────────────── */}
+      {/* ═════════════════════════════════════════════════════════════ */}
+      <div className="lg:col-span-4 bg-white border border-slate-200/80 rounded-3xl p-5 sm:p-6 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-5">
+        
+        {/* Profile Card Header */}
+        <div className="flex items-center gap-3.5">
+          <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-blue-500 via-sky-400 to-indigo-600 text-white font-bold text-xl flex items-center justify-center shadow-md">
+            H
+          </div>
+          <div>
+            <h2 className="text-[17px] font-extrabold text-slate-900 leading-tight">
+              Hana
+            </h2>
+            <span className="text-[10px] font-bold text-slate-400 tracking-wider uppercase mt-0.5 inline-block">
+              PROBLEM SOLVER
+            </span>
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div className="border-b border-dashed border-slate-200" />
+
+        {/* Game Plan Section */}
+        <div className="space-y-1.5">
+          <span className="text-[11px] font-bold text-slate-400 tracking-wider uppercase block">
+            GAME PLAN
+          </span>
+          <p className="text-xs text-slate-700 leading-relaxed font-normal">
+            I'm aiming to <strong className="font-semibold text-slate-900">do well academically by mastering the basics</strong>.
+          </p>
+        </div>
+
+        {/* Divider */}
+        <div className="border-b border-dashed border-slate-200" />
+
+        {/* How I Like to Learn (Multi-colored progress bars) */}
+        <div className="space-y-3">
+          <span className="text-[11px] font-bold text-slate-400 tracking-wider uppercase block">
+            HOW I LIKE TO LEARN
+          </span>
+
+          <div className="space-y-2.5">
+            {/* Seeing & Drawing - Blue */}
+            <div className="flex items-center justify-between gap-3 text-xs">
+              <span className="text-slate-700 font-medium shrink-0">Seeing & Drawing</span>
+              <div className="w-28 h-2 bg-slate-100 rounded-full overflow-hidden">
+                <div className="h-full bg-blue-600 rounded-full" style={{ width: '85%' }} />
+              </div>
+            </div>
+
+            {/* Reading & Writing - Purple */}
+            <div className="flex items-center justify-between gap-3 text-xs">
+              <span className="text-slate-700 font-medium shrink-0">Reading & Writing</span>
+              <div className="w-28 h-2 bg-slate-100 rounded-full overflow-hidden">
+                <div className="h-full bg-purple-600 rounded-full" style={{ width: '42%' }} />
+              </div>
+            </div>
+
+            {/* Speaking & Listening - Orange */}
+            <div className="flex items-center justify-between gap-3 text-xs">
+              <span className="text-slate-700 font-medium shrink-0">Speaking & Listening</span>
+              <div className="w-28 h-2 bg-slate-100 rounded-full overflow-hidden">
+                <div className="h-full bg-orange-500 rounded-full" style={{ width: '25%' }} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div className="border-b border-dashed border-slate-200" />
+
+        {/* Values / Mastery Badges */}
+        <div className="space-y-2">
+          <span className="text-[11px] font-bold text-slate-400 tracking-wider uppercase block">
+            VALUES
+          </span>
+
+          <div className="flex flex-wrap gap-1.5">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-100">
+              🌱 Growth
+            </span>
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-800 border border-amber-100">
+              🎨 Creativity
+            </span>
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-orange-50 text-orange-800 border border-orange-100">
+              🦁 Courage
+            </span>
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-800 border border-blue-100">
+              📚 Learning
+            </span>
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-50 text-yellow-800 border border-yellow-100">
+              ⭐ Excellence
+            </span>
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div className="border-b border-dashed border-slate-200" />
+
+        {/* Learning Sessions Calendar Heatmap Visualization */}
+        <div className="space-y-2 pt-0.5">
+          <div>
+            <h3 className="font-bold text-[14px] text-slate-900">
+              Learning Sessions
+            </h3>
+            <p className="text-xs text-slate-500 mt-0.5">
+              174 study sessions in the last year
+            </p>
+          </div>
+
+          {/* Months header */}
+          <div className="flex justify-between text-[11px] text-slate-400 font-medium px-0.5 pt-2">
+            <span>Jan</span>
+            <span>Feb</span>
+            <span>Mar</span>
+            <span>Apr</span>
+          </div>
+
+          {/* Heatmap Grid Matrix */}
+          <div className="grid grid-rows-7 grid-flow-col gap-1 pt-1 justify-between">
+            {heatmapData.map((row, rIdx) =>
+              row.map((val, cIdx) => (
+                <div
+                  key={`${rIdx}-${cIdx}`}
+                  className={`w-3.5 h-3.5 rounded-[3px] transition-colors ${getHeatmapColor(val)}`}
+                  title={`${val > 0 ? val * 2 : 0} sessions`}
+                />
+              ))
+            )}
+          </div>
+
+          {/* Heatmap Legend */}
+          <div className="flex items-center justify-between text-[10px] text-slate-400 pt-2">
+            <span>Less</span>
+            <div className="flex items-center gap-1">
+              <span className="w-2.5 h-2.5 rounded-[2px] bg-slate-100" />
+              <span className="w-2.5 h-2.5 rounded-[2px] bg-blue-100" />
+              <span className="w-2.5 h-2.5 rounded-[2px] bg-blue-300" />
+              <span className="w-2.5 h-2.5 rounded-[2px] bg-blue-500" />
+              <span className="w-2.5 h-2.5 rounded-[2px] bg-blue-600" />
+            </div>
+            <span>More</span>
+          </div>
         </div>
 
       </div>
